@@ -11,15 +11,11 @@
 <br/>7、仿微信聊天主体界面（文字、语音对话、消息记录等）
 <br/>8、平台金币模块
 <br/>示例：（未连接服务器效果）
-<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d1.png?raw=true)
-<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d2.png?raw=true)
-<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d3.png?raw=true)
-
 <br/>EN:
 <br/>Group chat - imitation WeChat basic function cross-platform APP (technology stack: H5plus cross-platform framework MUI development)
 <br/>APP implementation function:
 <br/>1, imitation WeChat message list
-<br/><br/>2, imitation WeChat address book
+<br/>2, imitation WeChat address book
 <br/>3, imitation WeChat friends add
 <br/>4, WeChat profile viewing
 <br/>5, APP multi-platform sharing
@@ -27,4 +23,9 @@
 <br/>7, imitation WeChat chat main interface (text, voice dialogue, message recording, etc.)
 <br/>8, platform gold coin module
 <br/>Example: (not connected to the server effect)
+<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d1.png?raw=true)
+<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d2.png?raw=true)
+<br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d3.png?raw=true)
+
+
 
