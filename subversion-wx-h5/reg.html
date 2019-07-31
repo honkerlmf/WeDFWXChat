@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.mui-input-group .mui-input-row:after {
+				left: 1px;
+			}
+			/*
+			 提示样式
+			 * */
+			::-webkit-input-placeholder {
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>手机</label>
+					<input id='account' type="number" class="mui-input-clear mui-input" placeholder="请输入手机号">
+				</div>
+				<div class="mui-input-row">
+					<label>昵称</label>
+					<input id='realName' type="text" class="mui-input-clear mui-input" placeholder="请输入昵称">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入确认密码">
+				</div>
+				<div class="mui-input-row">
+					<label style="">确认</label>
+					<input id='password_confirm' type="password" class="mui-input-clear mui-input" placeholder="请再次输入密码确认">
+				</div>
+				<div class="mui-input-row">
+					<label>公司</label>
+					<input id='job' type="text" class="mui-input-clear mui-input" placeholder="请输入公司">
+				</div>
+				<div class="mui-input-row">
+					<label>身份证</label>
+					<input id='cardNum' type="number" class="mui-input-clear mui-input" placeholder="请输入身份证号">
+				</div>
+
+				<div class="mui-input-row">
+					<label>邮箱</label>
+					<input id='email' type="email" class="mui-input-clear mui-input" placeholder="请输入邮箱">
+				</div>
+
+			</form>
+			<div class="mui-content-padded">
+				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+			</div>
+			<div class="mui-content-padded">
+				<p>注册真实可用，注册成功后的用户可用于登录App客户端。</p>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					plus.geolocation.getCurrentPosition(MapPoint, function(e) {
+						mui.toast("error:" + e.message);
+					})
+					var Lon; //获取经度
+					var Lat; //获取纬度  
+					var address = ""; //地址
+					var dinwei = "";
+
+					function MapPoint(position) {
+						Lon = position.coords.longitude; //获取经度  
+						Lat = position.coords.latitude; //获取纬度  
+						address = "当前地址：" + position.address.province + "," + position.address.city + "," + position.address.district + "," + position.address.street + "," + position.address.streetNum;
+						//mui.toast("经度:" + Lon + ", 纬度 :" + Lat);
+						dinwei = Lat + "," + Lon;
+						//mui.toast(address);
+					}
+					var settings = app.getSettings();
+					var regButton = doc.getElementById('reg');
+					var accountBox = doc.getElementById('account');
+					var realNameBox = doc.getElementById('realName');
+					var passwordBox = doc.getElementById('password');
+					var jobBox = doc.getElementById('job');
+					var cardNumBox = doc.getElementById('cardNum');
+					var passwordConfirmBox = doc.getElementById('password_confirm');
+					var emailBox = doc.getElementById('email');
+					regButton.addEventListener('tap', function(event) {
+						var regInfo = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							email: emailBox.value
+						};
+						//校验手机号用户名
+						var accountConfirm = accountBox.value;
+						if(accountConfirm.length != 11 || accountConfirm.substring(0, 1) != 1) {
+							plus.nativeUI.toast('请输入正确手机号');
+							return;
+						}
+						//校验昵称
+						var realNameConfirm = realNameBox.value;
+						if(realNameConfirm.length < 2 && realNameConfirm.length > 12) {
+							plus.nativeUI.toast('昵称请在2-12个字母之间！');
+							return;
+						}
+						//校验密码
+						var passwordConfirm = passwordConfirmBox.value;
+						if(passwordConfirm != regInfo.password) {
+							plus.nativeUI.toast('密码两次输入不一致');
+							return;
+						}
+						//校验昵称
+						var jobConfirm = jobBox.value;
+						if(jobConfirm.length < 2 && jobConfirm.length > 20) {
+							plus.nativeUI.toast('公司名称请在2-20个字母之间！');
+							return;
+						}
+						//校验昵称
+						var cardNumConfirm = cardNumBox.value;
+						if(cardNumConfirm.length != 18) {
+							plus.nativeUI.toast('请输入正确得身份证号码！');
+							return;
+						}
+						app.reg(regInfo, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								//核对正确后发送注册信息
+								//发送注册数据
+								mui.ajax({
+									type: "post",
+									url: ServerURL + '/user/addUser',
+									async: false,
+									data: {
+										"name": accountConfirm,
+										"password": passwordConfirm,
+										"phone": accountConfirm,
+										"realName": realNameConfirm,
+										"cardNum": cardNumConfirm,
+										"longitudeLatitude": dinwei,
+										"address": address
+									},
+									dataType: "jsonp",
+									jsonp: "jsoncallback",
+									timeout: 5000, //超时时间设置为5秒；
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									success: function(data, status, xhr) {
+										var successString = JSON.parse(data);
+										console.log("注册返回的数据内容为 : " + data);
+										if(successString.code != "-1") {
+											mui.toast('注册成功！您的登陆账号为：' + accountConfirm);
+											//跳转主页
+											mui.openWindow('login.html')
+										} else {
+											//提示打印返回数据
+											mui.toast(successString.msg);
+											return;
+										}
+										return data;
+									},
+									error: function(xhr, type, errorThrown) {
+										console.log("error: " + type);
+										return "获取登陆数据失败：服务器连接失败！";
+									}
+								});
+							}
+							//plus.nativeUI.toast('注册成功');
+							/*
+							 * 注意：
+							 * 1、因本示例应用启动页就是登录页面，因此注册成功后，直接显示登录页即可；
+							 * 2、如果真实案例中，启动页不是登录页，则需修改，使用mui.openWindow打开真实的登录页面
+							 */
+							plus.webview.getLaunchWebview().show("pop-in", 200, function() {
+								plus.webview.currentWebview().close("none");
+							});
+							//若启动页不是登录页，则需通过如下方式打开登录页
+							//							$.openWindow({
+							//								url: 'login.html',
+							//								id: 'login',
+							//								show: {
+							//									aniShow: 'pop-in'
+							//								}
+							//							});
+						});
+					});
+				});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

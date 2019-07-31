@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.titles {
+			margin-top: 12px;
+			margin-left: 10px;
+		}
+		
+		.mui-bar-nav {
+			background-color: #222222;
+		}
+		
+		.mui-content>.mui-table-view:first-child {
+			margin-top: 5px;
+		}
+		
+		.setinfo {
+			float: right;
+			max-width: 86px;
+			max-height: 46px;
+			background: #C0C0C0;
+			border-radius: 3px;
+			padding: 2px;
+			font-size: 0.6em;
+			word-wrap: break-word;
+			word-break: break-all;
+			color: #333333;
+			line-height: 15px;
+		}
+		
+		.mui-table-view-cell>a:not(.mui-btn) {
+			position: relative;
+			display: block;
+			overflow: hidden;
+			margin: -11px -15px;
+			padding: inherit;
+			white-space: inherit;
+			text-overflow: ellipsis;
+			color: inherit;
+		}
+		
+		.searchs {}
+		
+		.mui-input-row label~input,
+		.mui-input-row label~select,
+		.mui-input-row label~textarea {
+			float: left;
+			width: 90%;
+			margin-bottom: 0;
+			padding-left: 0;
+			border: 0;
+			margin-top: 5px;
+			text-align: left;
+			font-size: 0.9em;
+		}
+		
+		.mui-input-row label {
+			font-family: 'Helvetica Neue', Helvetica, sans-serif;
+			line-height: 1.1;
+			float: left;
+			width: 10%;
+			padding: 10px 10px;
+		}
+		
+		.mui-input-clear {
+			margin-top: 2px;
+			font-size: 0.9em;
+		}
+	</style>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<div style="height: 40px; float: left;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			</div>
+			<div style="height: 40px; float: left;" class="titles"><span style="color: white;font-size: 1em;">添加朋友</span></div>
+			<div style="height: 40px; float: right;"></div>
+		</header>
+		<ul class="mui-table-view" style="margin-top: 10px; margin-bottom: 10px;">
+			<div class="mui-input-row" style="margin-top: 50px;">
+				<label><span class="mui-icon mui-icon-search"></span></label>
+				<input id="goodso" type="search" class="mui-input-clear" onkeyup="enterSearch(event)" placeholder="请输入查找的账号/手机号">
+			</div>
+		</ul>
+		<div style="text-align: center;font-size: 0.78em;margin-left: 20px;margin-right: 20px;color: #333333;font-weight: bold;">我的账号:<span id="zhanghaoname">xxxxxx</span></div>
+		<ul class="mui-table-view" style="margin-top: 20px;">
+			<li class="mui-table-view-cell mui-media" id="addqun">
+				<a href="javascript:;" title="新建群">
+					<img class="mui-media-object mui-pull-left" src="images/iconfont-tianjia.png">
+					<div class="mui-media-body">
+						新建群
+						<p class="mui-ellipsis">邀请好友加入群</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" title="查找群聊">
+					<img class="mui-media-object mui-pull-left" src="images/set1.jpg">
+					<div class="mui-media-body">
+						查找群聊
+						<p class="mui-ellipsis">查询加入群聊</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media" id="fujin">
+				<a href="javascript:;" title="搜索附近">
+					<img class="mui-media-object mui-pull-left" src="images/set2.jpg">
+					<div class="mui-media-body">
+						搜索附近
+						<p class="mui-ellipsis">查找附近的用户</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media" id="lianxiren">
+				<a href="javascript:;" title="手机联系人">
+					<img class="mui-media-object mui-pull-left" src="images/w5.png">
+					<div class="mui-media-body">
+						手机联系人
+						<p class="mui-ellipsis">添加或邀请通讯录中的好友</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</body>
+	<script>
+		var txtName = localStorage.getItem("txtName");
+		$("#zhanghaoname").html(txtName);
+
+		function plusReady() {
+			
+		}
+		
+		function enterSearch(e) {
+			if(e.keyCode == 13) {
+				//收起键盘
+				$("#goodso").blur();
+				var searchUser = $("#goodso").val();
+				if(validate(searchUser)){
+					searchphonto(searchUser);
+				}else{
+					searchname(searchUser);
+				}
+				//mui.toast("点击了搜索！");
+			}
+		}
+
+		function searchphonto(searchUser) {
+			mui.ajax({
+				type: "post",
+				url: ServerURL + '/user/listUser',
+				async: false,
+				data: {
+					"phone": searchUser
+				},
+				dataType: "jsonp",
+				jsonp: "jsoncallback",
+				timeout: 500, //超时时间设置为0.5秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data, status, xhr) {
+					var successString = JSON.parse(data);
+					console.log("返回的根据手机号搜索用户数据内容为 : " + data);
+					var codelog = successString.code;
+					//获取题干模板 
+					if(data.indexOf("phone") != -1 && codelog != "-1") {
+						var listdata = successString.data.list;
+						var uid = listdata[0].id;
+						mui.openWindow({
+							id: 'contacts_info.html',
+							url: 'contacts_info.html',
+							extras: {
+								titleid: uid
+							}
+						})
+					} else if(codelog == "-1") {
+						mui.toast('网络连接错误！');
+					} else {
+						mui.toast('搜索无此用户！');
+					}
+					return data;
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log("error: " + type);
+					return "获取数据失败：服务器错误！";
+				}
+			});
+		}
+
+		function searchname(searchUser) {
+			mui.ajax({
+				type: "post",
+				url: ServerURL + '/user/listUser',
+				async: false,
+				data: {
+					"realName": searchUser
+				},
+				dataType: "jsonp",
+				jsonp: "jsoncallback",
+				timeout: 500, //超时时间设置为0.5秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data, status, xhr) {
+					var successString = JSON.parse(data);
+					console.log("返回的根据用户名搜索用户数据内容为 : " + data);
+					var codelog = successString.code;
+					//获取题干模板 
+					if(data.indexOf("phone") != -1 && codelog != "-1") {
+						var listdata = successString.data.list;
+						var uid = listdata[0].id;
+						mui.openWindow({
+							id: 'contacts_info.html',
+							url: 'contacts_info.html',
+							extras: {
+								titleid: uid
+							}
+						})
+					} else if(codelog == "-1") {
+						mui.toast('网络连接错误！');
+					} else {
+						mui.toast('搜索无此用户！');
+					}
+					return data;
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log("error: " + type);
+					return "获取数据失败：服务器错误！";
+				}
+			});
+		}
+
+		function validate(obj) {
+			var reg = /^[0-9]*$/;
+			return reg.test(obj);
+		};
+		//新建群
+		mui('#addqun').on("tap", "a", function(e) {
+			
+			mui.openWindow({
+				url: "add_qun.html",
+				id: "add_qun.html",
+				styles: {
+					//top:"40px",//新页面顶部位置
+				},
+				//打开窗口时传参方法
+				extras: {
+					
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//附近
+		mui('#fujin').on("tap", "a", function(e) {
+			
+			mui.openWindow({
+				url: "mpeople.html",
+				id: "mpeople.html",
+				styles: {
+					//top:"40px",//新页面顶部位置
+				},
+				//打开窗口时传参方法
+				extras: {
+					
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//联系人
+		mui('#lianxiren').on("tap", "a", function(e) {
+			
+			mui.openWindow({
+				url: "mail_list.html",
+				id: "mail_list.html",
+				styles: {
+					//top:"40px",//新页面顶部位置
+				},
+				//打开窗口时传参方法
+				extras: {
+					
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+	</script>
+
+</html>

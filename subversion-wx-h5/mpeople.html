@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				plus.nativeUI.showWaiting();
+				plus.geolocation.getCurrentPosition(MapPoint, function(e) {
+					mui.toast("error:" + e.message);
+				})
+			})
+			var Lon; //获取经度
+			var Lat; //获取纬度  
+			function MapPoint(position) {
+				Lon = position.coords.longitude; //获取经度  
+				Lat = position.coords.latitude; //获取纬度  
+				var address = "当前地址：" + position.address.province + "," + position.address.city + "," + position.address.district + "," + position.address.street + "," + position.address.streetNum;
+				//mui.toast("经度:" + Lon + ", 纬度 :" + Lat);
+				//mui.toast(address);
+				LodingList();
+			}
+		</script>
+		<style type="text/css">
+			.titles {
+				margin-top: 12px;
+			}
+			
+			.mui-bar-nav {
+				background-color: #222222;
+			}
+			
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 5px;
+			}
+			
+			.setinfo {
+				float: right;
+				max-width: 86px;
+				max-height: 46px;
+				background: #C0C0C0;
+				border-radius: 3px;
+				padding: 2px;
+				font-size: 0.6em;
+				word-wrap: break-word;
+				word-break: break-all;
+				color: #333333;
+				line-height: 15px;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				position: relative;
+				display: block;
+				overflow: hidden;
+				margin: -11px -15px;
+				padding: inherit;
+				white-space: inherit;
+				text-overflow: ellipsis;
+				color: inherit;
+			}
+		</style>
+		<header class="mui-bar mui-bar-nav">
+			<div style="height: 40px; float: left;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			</div>
+			<div style="height: 40px; float: left;" class="titles"><span style="color: white;font-size: 0.9em;">附近的人</span></div>
+			<div style="height: 40px; float: right;"><span class="mui-icon mui-icon-more" style="color: white;"> </span></div>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<!--
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方新闻">
+						<img class="mui-media-object mui-pull-left" src="images/weixin.png">
+						<div class="mui-media-body mui-pull-left">
+							附近的他
+							<p class="mui-ellipsis">200m以内</p>
+						</div>
+						<div class="setinfo">最近心情很好最近心情很好。</div>
+					</a>
+				</li>
+				
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方团队">
+						<img class="mui-media-object mui-pull-left" src="images/weixin.png">
+						<div class="mui-media-body mui-pull-left">
+							附近的她
+							<p class="mui-ellipsis">300m以内</p>
+						</div>
+						<div class="setinfo">最近心情很好呀！</div>
+					</a>
+				</li>
+				            作者：1471846120@qq.com
+                	时间：2018-03-29
+                	描述：
+                -->
+		</div>
+		<!--模板先加载-->
+		<script type="text/html" id="radio-page2">
+			<li class="mui-table-view-cell mui-media" id="chatlist{{num}}">
+				<a href="javascript:;" title="{{titleID}}">
+					<img class="mui-media-object mui-pull-left" src="images/weixin.png">
+					<div class="mui-media-body mui-pull-left">
+						{{Contents}}
+						<p class="mui-ellipsis">{{mapinfo}}</p>
+					</div>
+					<div class="setinfo">{{loginfo}}</div>
+				</a>
+			</li>
+		</script>
+		<script>
+			
+			//动态数据加载
+			//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+			function LodingList() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				console.log("纬度 为 : " + Lat);
+				console.log("经度 为 : " + Lon);
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/user/searchNear',
+					async: false,
+					data: {
+						"latitude": Lat, //纬度  
+						"longitude": Lon, //经度
+						"pageNum": 1,
+						"pageSize": 100,
+						"userId": loginID
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 2000, //超时时间设置为2秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的附近联系人数据内容为 : " + data);
+						var codelog =successString.code;
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(data.indexOf("longitudeLatitude") != -1) {
+							var listdata = successString.data.list;
+							for(var i = 0; i < listdata.length; i++) {
+								tiganStr = $("#radio-page2").html();
+								//替换相关的字段值 
+								tiganStr = del_html_tags(tiganStr, "{{num}}", i); //修改ID的值 
+								tiganStr = del_html_tags(tiganStr, "{{titleID}}", listdata[i].id); //添加题目内容 
+								tiganStr = del_html_tags(tiganStr, "{{Contents}}", listdata[i].name); //添加题目显示内容 
+								tiganStr = del_html_tags(tiganStr, "{{mapinfo}}", listdata[i].distance+"m以内"); //添加题目内容2
+								tiganStr = del_html_tags(tiganStr, "{{loginfo}}", "最新动态"); //添加题目内容3 
+								
+								var headImg = listdata[i].headImg;
+								if(null != headImg && undefined != headImg) {
+									tiganStr = del_html_tags(tiganStr, "{{images}}", listdata[i].headImg);
+								} else {
+									tiganStr = del_html_tags(tiganStr, "{{images}}", "images/weixin.png");
+								}
+								$(".mui-table-view").prepend(tiganStr); //替换之后追加到选项中去
+							}
+							
+						} else if(codelog=="-1"){
+							mui.toast('网络连接错误！');
+						}else {
+							mui.toast('附近暂无用户！');
+						}
+						plus.nativeUI.closeWaiting();
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取数据失败：服务器错误！";
+					}
+				});
+				
+				//查看附近的人信息
+			mui('.mui-table-view-cell').on("tap", "a", function(e) {
+				var titleid = this.getAttribute("title");
+				mui.openWindow({
+					url: "contacts_info.html",
+					id: "contacts_info.html",
+					styles: {
+						//top:"40px",//新页面顶部位置
+					},
+					//打开窗口时传参方法
+					extras: {
+						titleid: titleid
+					},
+					show: {
+						autoShow: true,
+						aniShow: "slide-in-right",
+						duration: 100
+					},
+					waiting: {
+						autoShow: true,
+						title: "正在加载中...",
+						options: {
+							//width: 
+							//height:
+						}
+					}
+				})
+			})
+				
+			}
+
+			//自定义一个方法批量替换制定的字符 
+			function del_html_tags(str, reallyDo, replaceWith) {
+				var e = new RegExp(reallyDo, "g");
+				words = str.replace(e, replaceWith);
+				return words;
+			}
+			
+			
+			
+		</script>
+	</body>
+
+</html>

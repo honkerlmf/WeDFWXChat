@@ -1,0 +1,67 @@
+<!DOCTYPE html> 
+<html> 
+ 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" /> 
+        <title></title> 
+        <script src="js/mui.min.js"></script> 
+        <link href="css/mui.min.css" rel="stylesheet" /> 
+        <script type="text/javascript" charset="utf-8"> 
+            mui.init(); 
+        </script> 
+        <style> 
+            body { 
+                margin-left: 5px; 
+            } 
+             
+            fieldset { 
+                width: 380px; 
+                height: 220px; 
+                text-align: center; 
+            } 
+             
+            #txtId, 
+            #txtPwd { 
+                width: 240px; 
+                margin: 10px auto; 
+            } 
+        </style> 
+ 
+    </head> 
+ 
+    <body> 
+        <fieldset id=""> 
+            <legend>用户登录</legend> 
+            用户名：<input type="text" id="txtId" /><br /> &nbsp;&nbsp;&nbsp; 
+            密码：<input type="password" id="txtPwd" /><br /> 
+            <input type="checkbox" id="chkRem" />记住密码<br /> 
+            <input type="button" value="登录" onclick="remPwd()" /> 
+        </fieldset> 
+        <script type="text/javascript"> 
+            var Id = localStorage.getItem("txtId"); 
+            if(Id != null) //如果缓存中有数据，则加载出来 
+            { 
+                document.getElementById("txtId").value = Id; 
+                document.getElementById("txtPwd").value = localStorage.getItem("txtPwd"); 
+                document.getElementById("chkRem").checked = "checked"; 
+            } 
+            //将账号与密码保存到Localstore 
+            function remPwd() { 
+                var check = document.getElementById("chkRem"); 
+                if(check.checked) //判断记住密码项是否勾选，是则记住密码到本地缓存 
+                { 
+                    var id = document.getElementById("txtId").value; 
+                    var pwd = document.getElementById("txtPwd").value; 
+                    localStorage.setItem("txtId", id); 
+                    localStorage.setItem("txtPwd", pwd); 
+                } else //否则就移除本地缓存 
+                { 
+                    localStorage.removeItem("txtId"); 
+                    localStorage.removeItem("txtPwd"); 
+                } 
+            } 
+        </script> 
+    </body> 
+ 
+</html> 

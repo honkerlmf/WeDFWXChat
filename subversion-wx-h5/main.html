@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<style type="text/css">
+			.mui-bar .mui-title {
+				left: 10px;
+			}
+		</style>
+	</head>
+
+	<body onresize="document.activeElement.scrollIntoView(true);">
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var backButtonPress = 0;
+			mui.back = function(event) {
+				backButtonPress++;
+				if(backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+				return false;
+			};
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" style="width: 100%;">
+		    	<span id="mypeople" class="alignleft" style="width:15%;"><a href="javascript:;" style="font-size: 0.8em;font-weight: bold;">附近的人</a></span>
+		    	<div class="alignleft" style="width:58%; height: 40px; margin-left:10px;margin-right: 6px; line-height: none;" >
+		    		<span style="margin: 1px;">
+		    		<input type="search" name="renmai" id="renmai" onkeyup="enterSearch(event)" value="" placeholder="请输入查询的企事业单位名称" style="font-size: 0.8em; height: 32px; color: #000000; padding: 5px 10px;text-align: left;background-color: #FAFAFA;" />
+		    	</span>
+		    	</div>
+		    	<span class="alignleft" style="width:8%; height: 40px;margin-left: 3px;" onclick="searchrenmai()"><img style="margin-top: 12px;" src="images/search.png" width="22px" height="22px"/></span>
+		    	<span class="alignright" id="addpepole" style="width:10%; height: 40px; margin-right: 3px;"><img style="margin-top: 12px;"src="images/add.png" width="22px" height="22px"/></span>
+		    	<!--
+		    	 作者：1471846120@qq.com 时间：2018-02-23 描述：
+                -->
+		    	</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="page1.html">
+				<span class="mui-icon mui-icon-chat"></span>
+				<span class="mui-tab-label">聊天</span>
+			</a>
+			<a class="mui-tab-item" href="page2.html">
+				<span class="mui-icon mui-icon-weixin"></span>
+				<span class="mui-tab-label">群聊</span>
+			</a>
+			<!--
+		    <a class="mui-tab-item" href="page3.html">
+		        <span class="mui-icon mui-icon-navigate"></span>
+		        <span class="mui-tab-label">发现</span>
+		    </a>
+		    作者：1471846120@qq.com
+            	时间：2018-03-01
+            	描述：
+            -->
+			<a class="mui-tab-item" href="page3.html">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+
+	</body>
+
+</html>
+<script type="text/javascript">
+	var tabPages = ['page1.html', 'page2.html', 'page3.html'];
+	var tabPagesStyle = {
+		top: '44px',
+		bottom: '50px'
+	}
+	//预启动
+	window.onload = function() {
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			for(var i = 0; i < tabPages.length; i++) {
+				var sub = plus.webview.create(tabPages[i], tabPages[i], tabPagesStyle);
+				sub.hide();
+				self.append(sub);
+				plus.webview.show(tabPages[0]);
+				//plus.webview.getWebviewById(tabPages[0]).reload();
+			}
+
+		})
+	}
+	mui(".mui-bar-tab").on("tap", "a", function(e) {
+		var tagPage = this.getAttribute("href");
+		//根据点击切换显示页面,参数有：名字、切换样式、延迟等。
+		plus.webview.show(tagPage, "fade-in", 100);
+		//		//点击每个page都会刷新（这是一个刷新子page的方法）
+		if(plus.webview.getWebviewById(tagPage) == null || plus.webview.getWebviewById(tagPage) == undefined) {
+
+		} else {
+			plus.webview.getWebviewById(tagPage).reload();
+			//plus.webview.getWebviewById(tagPage).refresh();
+		}
+
+	})
+
+	mui('#mypeople').on("tap", "a", function(e) {
+		var title = this.getAttribute("title");
+		mui.openWindow({
+			url: "mpeople.html",
+			id: "mpeople.html",
+			style: {},
+			//打开窗口时传参方法
+			extras: {
+				title: title
+			},
+			show: {
+				autoShow: true,
+				aniShow: "slide-in-right",
+				duration: 100
+			},
+			waiting: {
+				autoShow: true,
+				title: "正在加载中...",
+				options: {
+					//									width: 
+					//									height:
+				}
+			}
+		})
+	})
+
+	mui('#addpepole').on("tap", "img", function(e) {
+		var title = this.getAttribute("title");
+		mui.openWindow({
+			url: "addfriend.html",
+			id: "addfriend.html",
+			style: {},
+			//打开窗口时传参方法
+			extras: {
+				title: title
+			},
+			show: {
+				autoShow: true,
+				aniShow: "slide-in-right",
+				duration: 100
+			},
+			waiting: {
+				autoShow: true,
+				title: "正在加载中...",
+				options: {
+					//									width: 
+					//									height:
+				}
+			}
+		})
+	})
+
+	function enterSearch(e) {
+		if(e.keyCode == 13) {
+			//收起键盘
+			$("#renmai").blur();
+			//获取输入值
+			var searchUser = $("#renmai").val();
+			mui.openWindow({
+				id: 'search_ok.html',
+				url: 'search_ok.html',
+				extras: {
+					renmainame: searchUser
+				}
+			})
+			//mui.toast("点击了搜索！");
+		}
+	}
+
+	function searchrenmai() {
+		//收起键盘
+		$("#renmai").blur();
+		//获取输入值
+		var searchUser = $("#renmai").val();
+		mui.openWindow({
+			id: 'search_ok.html',
+			url: 'search_ok.html',
+			extras: {
+				renmainame: searchUser
+			}
+		})
+		//mui.toast("点击了搜索！");
+	}
+</script>

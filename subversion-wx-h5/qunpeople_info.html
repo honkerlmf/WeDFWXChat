@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+			.titles {
+				margin-top: 12px;
+			}
+			
+			.mui-bar-nav {
+				background-color: #222222;
+			}
+			
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 5px;
+			}
+			
+			.setinfo {
+				float: right;
+				max-width: 86px;
+				max-height: 46px;
+				background: #C0C0C0;
+				border-radius: 3px;
+				padding: 2px;
+				font-size: 0.6em;
+				word-wrap: break-word;
+				word-break: break-all;
+				color: #333333;
+				line-height: 15px;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				position: relative;
+				display: block;
+				overflow: hidden;
+				margin: -11px -5px;
+				padding: inherit;
+				white-space: inherit;
+				text-overflow: ellipsis;
+				color: inherit;
+			}
+			
+			p {
+				font-size: 13px;
+				margin-top: 0;
+				margin-bottom: 5px;
+				color: #8f8f94;
+				font-family: "新宋体";
+			}
+			.spanxingqu {
+				font-size: 13px;
+				background: #797979;
+				border-radius: 3px;
+				padding: 2px;
+				margin: 1px;
+			}
+		</style>
+		<header class="mui-bar mui-bar-nav">
+			<div style="height: 40px; float: left;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			</div>
+			<div style="height: 40px; float: left; margin-left: 5px;" class="titles"><span style="color: white;font-size: 0.9em;font-weight: bold;">详细资料</span></div>
+			<div style="height: 40px; float: right;"><span class="mui-icon mui-icon-more" style="color: white;"> </span></div>
+		</header>
+		<div class="mui-content">
+
+			<ul class="mui-table-view" style="margin-top: 10px; margin-bottom: 15px;">
+				<li class="mui-table-view-cell mui-media" id="myinfo">
+					<img class="mui-media-object mui-pull-left" id="logosrc" style="width: 50px;height: 50px" src="images/okhaoyou.png">
+					<div class="mui-media-body" id="realName" style="font-size: 15px;margin-bottom: 1px;">
+						 
+					</div>
+					<p class="mui-ellipsis" id="zhanghao" style="line-height: 20px;">帐号：</p>
+					<!--
+						<p class="mui-ellipsis" style="line-height: 18px;">昵称：rwx</p>
+                    	作者：1471846120@qq.com
+                    	时间：2018-03-30
+                    	描述：
+                   -->
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<span id="" style="font-size: 15px">
+			              		电话号码:
+			        </span>
+					<span  style="margin-left: 5px;color: #0062CC">
+			              		<a id="photonum" >
+			              		
+			              		</a>
+			        </span>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" >
+					<div id="" style="height: 30px;width: 70px; float: left; font-size: 15px;">
+			              	兴趣爱好:
+			        </div>
+					<div id="xingqulist" style="margin-left: 72px; -webkit-line-clamp: 2;">
+			             <span class="spanxingqu" >
+			             	拼车
+			             </span>
+			             <!--
+			             <span class="spanxingqu" >
+			             	拼车888
+			             </span>
+			             <span class="spanxingqu" >
+			             	拼车888
+			             </span>
+			             <span class="spanxingqu" >
+			             	拼车888
+			             </span>
+			             <span class="spanxingqu" >
+			             	拼车888
+			             </span>
+			             <span class="spanxingqu" >
+			             	拼车888
+			             </span>
+                         	作者：1471846120@qq.com
+                         	时间：2018-03-30
+                         	描述：
+                        -->
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" style="font-size: 15px">
+					最新动态
+				</li>
+			</ul>
+			<div class="buttons" style="margin-left: 5px;margin-right: 5px;margin-top: 10px;">
+				<input type="button" id="" value="发消息" style="width: 98%;line-height:28px;background-color: green; color: white; font-weight: bold;font-size: 15px;" />
+			</div>
+		</div>
+	</body>
+	<!--模板先加载-->
+	<script type="text/html" id="radio-page6">
+		 <span class="spanxingqu" id="listxq{{num}}">
+			             	{{xingquneirong}}
+		</span>
+	</script>
+<script type="text/javascript">
+	
+		var IDinfos;
+		mui.plusReady(function() {
+			//获取传值对象
+				var cw = plus.webview.currentWebview();
+				IDinfos = cw.IDinfo;
+				LodingPeopleInfo();
+			})
+		//动态数据加载广告
+		//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+		function LodingPeopleInfo() {
+			console.log("IDinfos为 : " + IDinfos);
+			//请求数据
+			mui.ajax({
+				type: "post",
+				url: ServerURL + '/user/getUserById',
+				async: true,
+				data: {
+					 "id": IDinfos
+				},
+				dataType: "jsonp",
+				jsonp: "jsoncallback",
+				timeout: 500, //超时时间设置为0.5秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data, status, xhr) {
+					var successString = JSON.parse(data);
+					console.log("返回的个人信息内容为 : " + data);
+					var codelog =successString.code;
+					//获取题干模板 
+					if(data.indexOf("name") != -1&&codelog == "0") {
+						var listdata = successString.data;
+						    //$("#logosrc").src(listdata.headImg);
+						    if(undefined!=listdata.headImg){
+						    	if(listdata.headImg.length>1){
+						    	  $("#logosrc").attr("src",listdata.headImg);
+						    	}
+						    }else{
+						    	  $("#logosrc").attr("src","images/okhaoyou.png");	
+						    }
+							$("#photonum").html(listdata.phone);
+							$("#realName").html(listdata.realName);
+							$("#zhanghao").html("账号:"+listdata.name);
+							//添加多项兴趣
+							var interestList = successString.data.interestList;
+							if(interestList.length >0) {
+								tiganStrss = $("#radio-page6").html();
+								for(var i = 0; i < interestList.length; i++) {
+								tiganStrss = del_html_tags(tiganStrss, "{{num}}", interestList[i].id);
+								tiganStrss = del_html_tags(tiganStrss, "{{xingquneirong}}", interestList[i].name);
+								$("#xingqulist").append(tiganStrss); //替换之后追加到选项中去
+								}
+							} else {
+								
+							}
+
+					} else if(codelog=="-1"){
+							mui.toast('网络连接错误！');
+					}else {
+						mui.toast('获取信息错误！');
+					} 
+					return data;
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log("error: " + type);
+					return "获取数据失败：服务器错误！";
+				}
+			});
+		}
+		//自定义一个方法批量替换制定的字符 
+		function del_html_tags(str, reallyDo, replaceWith) {
+			var e = new RegExp(reallyDo, "g");
+			words = str.replace(e, replaceWith);
+			return words;
+		}
+		//发消息
+		mui('.buttons').on("tap", "input", function(e) {
+			var title=this.getAttribute("title");
+					mui.openWindow({
+                            url: "im-chat.html",
+							id: "im-chat.html",
+							styles: {
+								//top:"40px",//新页面顶部位置
+							},
+							//打开窗口时传参方法
+							extras:{
+								title:title,
+								tid:IDinfo
+							},
+							show: {
+								autoShow: true,
+								aniShow: "slide-in-right",
+								duration: 100
+							},
+							waiting: {
+								autoShow: true,
+								title: "正在加载中...",
+								options:{
+//									width: 
+//									height:
+								}
+							}
+						})
+				})
+</script>
+</html>

@@ -1,0 +1,148 @@
+{
+	"login.html": {
+		"refer": [
+			"main.html",
+			"reg.html",
+			"forget_password.html"
+		],
+		"resources": []
+	},
+	"main.html": {
+		"resources": [
+			"page1.html"
+		],
+		"refer": [
+			"page3.html",
+			"page2.html",
+			"page4.html",
+			"page1.html",
+			"mpeople.html",
+			"mail_list.html",
+			"getAdBook.html",
+			"addfriend.html",
+			"search_ok.html"
+		]
+	},
+	"page1.html": {
+		"refer": [
+			"page1_chat.html",
+			"im-chat.html",
+			"main.html",
+			"mail_list.html",
+			"chat_list.html",
+			"friendster/friendster.html"
+		],
+		"resources": [
+			"chat_list.html"
+		]
+	},
+	"im-chat.html": {
+		"resources": [
+			"/js/mui.imageViewer.js",
+			"/js/mui.min.js",
+			"/js/arttmpl.js"
+		],
+		"refer": [
+			"qun-chat.html",
+			"people_info.html"
+		]
+	},
+	"page3.html": {
+		"refer": [
+			"myset.html",
+			"my_purse.html",
+			"problem.html",
+			"setting.html",
+			"mpeople.html",
+			"fenxiang.html",
+			"friendster/friendster.html",
+			"testaddphoto.html",
+			"upfiles.html",
+			"friendster/findex.html"
+		],
+		"resources": []
+	},
+	"my_purse.html": {
+		"refer": [
+			"my_purses.html"
+		],
+		"resources": []
+	},
+	"my_purses.html": {
+		"refer": [
+			"my_purse.html"
+		],
+		"resources": []
+	},
+	"mpeople.html": {
+		"refer": [
+			"main.html",
+			"contacts_info.html"
+		],
+		"resources": []
+	},
+	"chat_list.html": {
+		"refer": [
+			"im-chat.html"
+		]
+	},
+	"page2.html": {
+		"refer": [
+			"qun-chat.html",
+			"createShow.html"
+		]
+	},
+	"setting.html": {
+		"refer": [
+			"login.html"
+		]
+	},
+	"friendster/friendster.html": {
+		"refer": [
+			"friendster/addfriendster.html"
+		]
+	},
+	"problem.html": {
+		"refer": [
+			"problems.html"
+		]
+	},
+	"qun-chat.html": {
+		"refer": [
+			"people_info.html",
+			"qunpeople_info.html",
+			"PInfoList.html"
+		]
+	},
+	"qunpeople_info.html": {
+		"refer": [
+			"im-chat.html"
+		]
+	},
+	"contacts_info.html": {
+		"refer": [
+			"im-chat.html"
+		]
+	},
+	"addfriend.html": {
+		"refer": [
+			"people_info.html",
+			"contacts_info.html"
+		]
+	},
+	"search_ok.html": {
+		"refer": [
+			"contacts_info.html"
+		]
+	},
+	"friendster/addfriendster.html": {
+		"refer": [
+			"friendster/friendster.html"
+		]
+	},
+	"mail_list.html": {
+		"refer": [
+			"im-chat.html"
+		]
+	}
+}

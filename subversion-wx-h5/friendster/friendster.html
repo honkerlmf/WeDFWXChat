@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+		<title>朋友圈</title>
+		<link rel="stylesheet" type="text/css" href="css/commes.css" />
+		<link rel="stylesheet" href="css/photoswipe.css">
+		<link rel="stylesheet" href="css/default-skin/default-skin.css">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+			.titles {
+				margin-top: 12px;
+			}
+			
+			.mui-bar-nav {
+				background-color: #222222;
+			}
+			
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 5px;
+			}
+			
+			.setinfo {
+				float: right;
+				max-width: 86px;
+				max-height: 46px;
+				background: #C0C0C0;
+				border-radius: 3px;
+				padding: 2px;
+				font-size: 0.6em;
+				word-wrap: break-word;
+				word-break: break-all;
+				color: #333333;
+				line-height: 15px;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				position: relative;
+				display: block;
+				overflow: hidden;
+				margin: -11px -15px;
+				padding: inherit;
+				white-space: inherit;
+				text-overflow: ellipsis;
+				color: inherit;
+			}
+			
+			.mui-contents {
+				margin-top: 41px;
+			}
+			
+			.mui-bar-nav.mui-bar .mui-icon {
+				margin-right: -10px;
+				margin-left: -10px;
+				padding-right: 10px;
+				padding-left: 5px;
+			}
+			
+			.ui-flex {
+				display: -webkit-box !important;
+				display: -webkit-flex !important;
+				display: -ms-flexbox !important;
+				display: flex !important;
+				-webkit-flex-wrap: wrap;
+				-ms-flex-wrap: wrap;
+				flex-wrap: wrap
+			}
+			
+			.ui-flex,
+			.ui-flex *,
+			.ui-flex :after,
+			.ui-flex :before {
+				box-sizing: border-box
+			}
+			
+			.ui-flex.justify-center {
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				-ms-flex-pack: center;
+				justify-content: center
+			}
+			
+			.ui-flex.center {
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				-ms-flex-pack: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				-ms-flex-align: center;
+				align-items: center
+			}
+			
+			.right_con {
+				margin-left: 85px;
+				display: block;
+				margin-right: 2px;
+			}
+		</style>
+		<header class="mui-bar mui-bar-nav">
+			<div style="height: 40px; float: left;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			</div>
+			<div style="height: 40px; float: left;" class="titles"><span style="color: white;font-size: 0.9em;">朋友圈</span></div>
+			<div id="addfriend" style="height: 40px; float: right;"><span class="mui-icon mui-icon-camera" style="color: white;"> </span></div>
+		</header>
+		<div class="mui-contents">
+
+		</div>
+		<!--以下内容不要管-->
+		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="pswp__bg"></div>
+			<div class="pswp__scroll-wrap">
+				<div class="pswp__container">
+					<div class="pswp__item"></div>
+					<div class="pswp__item"></div>
+					<div class="pswp__item"></div>
+				</div>
+				<div class="pswp__ui pswp__ui--hidden">
+					<div class="pswp__top-bar">
+						<div class="pswp__counter"></div>
+						<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+						<div class="pswp__preloader">
+							<div class="pswp__preloader__icn">
+								<div class="pswp__preloader__cut">
+									<div class="pswp__preloader__donut"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+						<div class="pswp__share-tooltip"></div>
+					</div>
+					<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+					<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+					<div class="pswp__caption">
+						<div class="pswp__caption__center"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/photoswipe.min.js"></script>
+		<script src="js/photoswipe-ui-default.min.js"></script>
+		<script src="../js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<!--
+        	作者：1471846120@qq.com
+        	时间：2018-04-09
+        	描述：原带定位的模板
+        -->
+		<script type="text/html">
+			<div class="container">
+				<!--用户头像-->
+				<div class="header">
+					<div><img src="images/s1_m.jpg" /></div>
+				</div>
+				<div class="right_con">
+					<div class="demo">
+						<!--用户名and发布时间-->
+						<div class="use">
+							<div class="usename"><span>徐静蕾</span><em class="pub-time">刚刚</em></div>
+						</div>
+						<!--分享的内容-->
+						<p class="fx_content">适用浏览器：IE8、360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗.</p>
+						<!--分享的图片-->
+						<div class="my-gallery">
+							<figure>
+								<a href="http://pic63.nipic.com/file/20150401/13173667_095934403000_2.jpg" data-size="800x1142">
+									<img style="max-height: 88px;max-width: 88px;min-height: 70px;min-width: 88px;" src="http://pic63.nipic.com/file/20150401/13173667_095934403000_2.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s2.jpg" data-size="800x1142">
+									<img src="images/s2_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s3.jpg" data-size="800x1142">
+									<img src="images/s3_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s4.jpg" data-size="800x1142">
+									<img src="images/s4_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s5.jpg" data-size="800x1142">
+									<img src="images/s5_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s3.jpg" data-size="800x1142">
+									<img src="images/s3_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s4.jpg" data-size="800x1142">
+									<img src="images/s4_m.jpg" />
+								</a>
+							</figure>
+							<figure>
+								<a href="images/s5.jpg" data-size="800x1142">
+									<img src="images/s5_m.jpg" />
+								</a>
+							</figure>
+						</div>
+						<!--显示的位置-->
+						<div class="fx_address">南京市建邺区</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<!--动态显示的模板是自己得动态-->
+		<script type="text/html" id="radio-friendster1">
+			<div class="container">
+				<!--用户头像-->
+				<div class="header">
+					<div><img src="{{fimage}}" /></div>
+				</div>
+				<div class="right_con">
+					<div class="demo">
+						<!--用户名and发布时间-->
+						<div class="use">
+							<div class="usename"><span>{{uname}}</span>
+								<span style="float: right;">
+							<em class="pub-time" style="font-size: 0.9em;margin: 0px;float: left;">
+								{{fabutime}}
+							</em>
+							<span class="mui-icon mui-icon-closeempty" onclick="delxx('{{id}}');" style="background: #EEEEEE;color:#555555;position:relative;float：right;right:0px;top:-8px;width: 16px;height: 16px;border-radius: 25%;"></span>
+								</span>
+
+							</div>
+
+						</div>
+
+						<!--分享的内容-->
+						<p class="fx_content">{{fxcontent}}</p>
+						<!--分享的图片-->
+						<div class="my-gallery">
+							{{imagehtml}}
+						</div>
+						<!--显示的位置-->
+						<!--
+						<div class="fx_address">{{dinwei}}</div>
+						            作者：1471846120@qq.com
+                        	时间：2018-04-08
+                        	描述：
+                        -->
+					</div>
+				</div>
+
+			</div>
+		</script>
+				<!--动态显示的模板-->
+		<script type="text/html" id="radio-friendster">
+			<div class="container">
+				<!--用户头像-->
+				<div class="header">
+					<div><img src="{{fimage}}" /></div>
+				</div>
+				<div class="right_con">
+					<div class="demo">
+						<!--用户名and发布时间-->
+						<div class="use">
+							<div class="usename"><span>{{uname}}</span>
+								<span style="float: right;">
+							<em class="pub-time" style="font-size: 0.9em;margin: 0px;float: left;">
+								{{fabutime}}
+							</em>
+							</div>
+						</div>
+						<!--分享的内容-->
+						<p class="fx_content">{{fxcontent}}</p>
+						<!--分享的图片-->
+						<div class="my-gallery">
+							{{imagehtml}}
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</script>
+		<script type="text/javascript">
+			var initPhotoSwipeFromDOM = function(gallerySelector) {
+				//动态数据显示（放在图片处理js前）
+				var loginID = localStorage.getItem("loginID");
+				mui.ajax({
+					type: "post",
+					//用户朋友圈
+					//url: ServerURL + '/getUActiviti',
+					//好友朋友圈
+					url: ServerURL + '/getFriendActiviti',
+					async: false,
+					data: {
+						"lastActivitiId": 0,
+						"pageNum": 1,
+						"pageSize": 100,
+						//"userId": "2b294a27bc87450f84556c70ffba5c01"
+						"userId": loginID
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 1000, //超时时间设置为1秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的朋友圈数据内容为 : " + data);
+						var codelog = successString.code;
+						//获取题干模板 
+						if(data.indexOf("userId") != -1 && codelog != "-1") {
+							var listdata = successString.data.list;
+							for(var i = 0; i < successString.data.list.length; i++) {
+								tiganStr = $("#radio-friendster").html();
+								//替换相关的字段值 
+								tiganStr = del_html_tags(tiganStr, "{{uname}}", listdata[i].uName);
+								tiganStr = del_html_tags(tiganStr, "{{id}}", listdata[i].id); //修改ID的值
+								//当前时间
+								var m_date = new Date();
+								var dateSet1 = new Date(m_date);
+								var year1 = dateSet1.getFullYear();
+								//读取时间
+								var dateSet = new Date(listdata[i].creatTime);
+								var year = dateSet.getFullYear();
+								var mon = dateSet.getMonth() + 1;
+								var day = dateSet.getDate();
+								var Hours = dateSet.getHours();
+								var Minutes = dateSet.getMinutes();
+								if(Minutes < 10) {
+									Minutes = "0" + Minutes;
+								} else {}
+								//同一年不显示该年
+								if(year1 == year) {
+									tiganStr = del_html_tags(tiganStr, "{{fabutime}}", mon + "月" + day + "日 " + Hours + ":" + Minutes); //添加含年内容 
+								} else {
+									tiganStr = del_html_tags(tiganStr, "{{fabutime}}", year + '年' + mon + "月" + day + "日 " + Hours + ":" + Minutes); //添加含年内容 
+								}
+								tiganStr = del_html_tags(tiganStr, "{{fxcontent}}", listdata[i].content);
+								var images = listdata[i].image;
+								if(null != images && undefined != images) {
+									var imagehtml = "<figure>" +
+										"<a class='ui-flex' href='" + images + "' data-size='800x1142'>" +
+										"<img style='max-height: 88px;max-width: 88px;min-height: 70px;min-width: 88px;' src='" + images + "' alt='Image description' />" +
+										"</a>" +
+										"</figure>";
+									tiganStr = del_html_tags(tiganStr, "{{imagehtml}}", imagehtml);
+								} else {
+									tiganStr = del_html_tags(tiganStr, "{{imagehtml}}", "");
+								}
+								//头像
+								var headImg = listdata[i].headImg;
+								if(null != headImg && undefined != headImg) {
+									tiganStr = del_html_tags(tiganStr, "{{fimage}}", headImg);
+								} else {
+									tiganStr = del_html_tags(tiganStr, "{{fimage}}", "../images/user-photo.png.jpg");
+								}
+								$(".mui-contents").append(tiganStr); //替换之后追加到选项中去
+							}
+						} else if(codelog == "-1") {
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('无朋友圈列表');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取朋友圈数据失败：服务器错误！";
+					}
+				});
+				//自定义一个方法批量替换制定的字符 
+				function del_html_tags(str, reallyDo, replaceWith) {
+					var e = new RegExp(reallyDo, "g");
+					words = str.replace(e, replaceWith);
+					return words;
+				}
+				// parse slide data (url, title, size ...) from DOM elements 
+				// (children of gallerySelector)
+				var parseThumbnailElements = function(el) {
+					var thumbElements = el.childNodes,
+						numNodes = thumbElements.length,
+						items = [],
+						figureEl,
+						linkEl,
+						size,
+						item;
+
+					for(var i = 0; i < numNodes; i++) {
+
+						figureEl = thumbElements[i]; // <figure> element
+
+						// include only element nodes 
+						if(figureEl.nodeType !== 1) {
+							continue;
+						}
+
+						linkEl = figureEl.children[0]; // <a> element
+
+						size = linkEl.getAttribute('data-size').split('x');
+
+						// create slide object
+						item = {
+							src: linkEl.getAttribute('href'),
+							w: parseInt(size[0], 10),
+							h: parseInt(size[1], 10)
+						};
+
+						if(figureEl.children.length > 1) {
+							// <figcaption> content
+							item.title = figureEl.children[1].innerHTML;
+						}
+
+						if(linkEl.children.length > 0) {
+							// <img> thumbnail element, retrieving thumbnail url
+							item.msrc = linkEl.children[0].getAttribute('src');
+						}
+
+						item.el = figureEl; // save link to element for getThumbBoundsFn
+						items.push(item);
+					}
+
+					return items;
+				};
+
+				// find nearest parent element
+				var closest = function closest(el, fn) {
+					return el && (fn(el) ? el : closest(el.parentNode, fn));
+				};
+
+				// triggers when user clicks on thumbnail
+				var onThumbnailsClick = function(e) {
+					e = e || window.event;
+					e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+					var eTarget = e.target || e.srcElement;
+
+					// find root element of slide
+					var clickedListItem = closest(eTarget, function(el) {
+						return(el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+					});
+
+					if(!clickedListItem) {
+						return;
+					}
+
+					// find index of clicked item by looping through all child nodes
+					// alternatively, you may define index via data- attribute
+					var clickedGallery = clickedListItem.parentNode,
+						childNodes = clickedListItem.parentNode.childNodes,
+						numChildNodes = childNodes.length,
+						nodeIndex = 0,
+						index;
+
+					for(var i = 0; i < numChildNodes; i++) {
+						if(childNodes[i].nodeType !== 1) {
+							continue;
+						}
+
+						if(childNodes[i] === clickedListItem) {
+							index = nodeIndex;
+							break;
+						}
+						nodeIndex++;
+					}
+
+					if(index >= 0) {
+						// open PhotoSwipe if valid index found
+						openPhotoSwipe(index, clickedGallery);
+					}
+					return false;
+				};
+
+				// parse picture index and gallery index from URL (#&pid=1&gid=2)
+				var photoswipeParseHash = function() {
+					var hash = window.location.hash.substring(1),
+						params = {};
+
+					if(hash.length < 5) {
+						return params;
+					}
+
+					var vars = hash.split('&');
+					for(var i = 0; i < vars.length; i++) {
+						if(!vars[i]) {
+							continue;
+						}
+						var pair = vars[i].split('=');
+						if(pair.length < 2) {
+							continue;
+						}
+						params[pair[0]] = pair[1];
+					}
+
+					if(params.gid) {
+						params.gid = parseInt(params.gid, 10);
+					}
+
+					return params;
+				};
+
+				var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
+					var pswpElement = document.querySelectorAll('.pswp')[0],
+						gallery,
+						options,
+						items;
+
+					items = parseThumbnailElements(galleryElement);
+
+					// define options (if needed)
+					options = {
+						// define gallery index (for URL)
+						galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+						getThumbBoundsFn: function(index) {
+							// See Options -> getThumbBoundsFn section of documentation for more info
+							var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+								pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+								rect = thumbnail.getBoundingClientRect();
+
+							return {
+								x: rect.left,
+								y: rect.top + pageYScroll,
+								w: rect.width
+							};
+						}
+
+					};
+					
+					// PhotoSwipe opened from URL
+					if(fromURL) {
+						if(options.galleryPIDs) {
+							// parse real index when custom PIDs are used 
+							// http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+							for(var j = 0; j < items.length; j++) {
+								if(items[j].pid == index) {
+									options.index = j;
+									break;
+								}
+							}
+						} else {
+							// in URL indexes start from 1
+							options.index = parseInt(index, 10) - 1;
+						}
+					} else {
+						options.index = parseInt(index, 10);
+					}
+
+					// exit if index not found
+					if(isNaN(options.index)) {
+						return;
+					}
+
+					if(disableAnimation) {
+						options.showAnimationDuration = 0;
+					}
+
+					// Pass data to PhotoSwipe and initialize it
+					gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+					gallery.init();
+				};
+
+				// loop through all gallery elements and bind events
+				var galleryElements = document.querySelectorAll(gallerySelector);
+
+				for(var i = 0, l = galleryElements.length; i < l; i++) {
+					galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+					galleryElements[i].onclick = onThumbnailsClick;
+				}
+
+				// Parse URL and open gallery if it contains #&pid=3&gid=1
+				var hashData = photoswipeParseHash();
+				if(hashData.pid && hashData.gid) {
+					openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+				}
+			};
+
+			// execute above function
+			initPhotoSwipeFromDOM('.my-gallery');
+
+			mui('#addfriend').on("tap", "span", function(e) {
+				//var title = this.getAttribute("title");
+				//跳转的链接及标识
+				//var taghref = this.getAttribute("href");
+				mui.openWindow({
+					url: "addfriendster.html",
+					id: "addfriendster.html",
+					styles: {
+						//top:"40px",//新页面顶部位置
+					},
+					show: {
+						autoShow: true,
+						aniShow: "slide-in-right",
+						duration: 100
+					},
+					waiting: {
+						autoShow: true,
+						title: "正在加载中...",
+						options: {
+							//									width: 
+							//									height:
+						}
+					}
+				})
+			})
+			//删除朋友圈消息
+			function delxx(idn) {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				var btnArray = ['否', '是'];
+				mui.confirm('确认删除该条动态么？', '朋友圈动态', btnArray, function(e) {
+					if(e.index == 1) {
+						mui.ajax({
+							type: "post",
+							url: ServerURL + '/deleteUActiviti',
+							async: true,
+							data: {
+								"id": idn,
+								"userId": loginID
+							},
+							dataType: "jsonp",
+							jsonp: "jsoncallback",
+							timeout: 1000, //超时时间设置为1秒；
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							success: function(data, status, xhr) {
+								var successString = JSON.parse(data);
+								console.log("返回的删除朋友圈数据内容为 : " + data);
+								var codelog = successString.code;
+								//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+								//获取题干模板 
+								if(codelog != "-1") {
+									mui.toast('删除成功！');
+									plus.webview.getWebviewById('friendster.html').reload();
+								} else if(codelog == "-1") {
+									mui.toast('网络连接错误！');
+								} else {
+									mui.toast('删除失败！');
+								}
+								return data;
+							},
+							error: function(xhr, type, errorThrown) {
+								console.log("error: " + type);
+								mui.toast('删除超时！');
+								return "获取数据失败：服务器错误！";
+							}
+						});
+
+					} else {}
+				})
+			}
+		</script>
+	</body>
+
+</html>

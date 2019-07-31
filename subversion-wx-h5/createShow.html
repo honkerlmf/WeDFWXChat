@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.plusReady(function() {
+				//获取传值对象
+				var cw = plus.webview.currentWebview();
+				var titleName = cw.title;
+				var hrefs = cw.hrefs;
+				console.log("href内容为 : " + hrefs);
+				plus.nativeUI.showWaiting();
+				mui.init({
+					//示例打开百度,进行加载
+					subpages: [{
+						url: hrefs,
+						id: hrefs,
+						styles: {
+						}
+					}]
+				})
+				var ws = plus.webview.currentWebview(); //加载进外部网页,加载完成关闭等待框
+				ws.show('slide-in-right', 20);
+				plus.nativeUI.closeWaiting();
+				//获取对象
+				var header = document.querySelector(".mui-title");
+				header.innerText = titleName;
+				//plus.runtime.openURL(hrefs);
+				
+
+			})
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+
+	</body>
+
+</html>

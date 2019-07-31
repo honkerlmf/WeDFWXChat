@@ -1,0 +1,444 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.page2.css" rel="stylesheet" />
+		<style>
+			.mui-slider .mui-slider-group .mui-slider-item {
+				font-size: 14px;
+				position: relative;
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				max-height: 180px;
+				min-height: 120px;
+				vertical-align: top;
+				white-space: normal;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+
+		<div class="mui-slider" style="margin: 1px;">
+			<div class="mui-slider-group mui-slider-loop">
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#"><img src="images/1.jpg" /></a>
+				</div>
+				<!--
+                	
+				<div class="mui-slider-item">
+					<a href="#"><img src="images/1.jpg" /></a>
+				</div>
+				<div class="mui-slider-item">
+					<a href="#"><img src="images/2.jpg" /></a>
+				</div>
+				<div class="mui-slider-item">
+					<a href="#"><img src="images/3.jpg" /></a>
+				</div>
+				<div class="mui-slider-item">
+					<a href="#"><img src="images/4.jpg" /></a>
+				</div>
+				作者：1471846120@qq.com
+                	时间：2018-03-28
+                	描述：
+                -->
+			</div>
+		</div>
+
+		<ul class="mui-table-view" id="listul">
+			<!--
+			<li class="mui-table-view-cell">
+				<a href="javascript:;" title="群聊组Test1">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组Test1
+					</div>
+				</a>
+			</li>
+			
+			<li class="mui-table-view-cell">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组2
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组3
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组4
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组5
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						群聊组6
+					</div>
+				</a>
+			</li>
+			作者：1471846120@qq.com
+            	时间：2018-03-28
+            	描述：-
+            -->
+		</ul>
+	</body>
+	<!--模板先加载-->
+	<script type="text/html" id="radio-page2">
+		<li class="mui-table-view-cell" id="chatlist{{num}}">
+			<a href="javascript:;" title="{{titleName}}" name="{{roomID}}" onclick="gotoqunliao('{{titleName}}','{{roomID}}');">
+				<img class="mui-media-object mui-pull-left" src="{{imgsrc}}">
+				<div class="mui-media-object mui-pull-left">
+					{{titleName}}
+				</div>
+			</a>
+		</li>
+	</script>
+	<!--模板先加载-->
+	<script type="text/html" id="radio-page3">
+		<div class="mui-slider-item" id="radiolist{{num}}">
+			<a href="{{hrefurl}}" title="{{titlesName}}" onclick="gotoguanggao('{{titlesName}}','{{hrefurl}}');">
+				<img src="{{imagesrc}}" />
+			</a>
+		</div>
+	</script>
+
+	<script type="text/javascript">
+		window.onload = function() {
+			var refreshGet = "0";
+			LodingList();
+			LodingGuanggaoList();
+
+			//动态数据加载群聊列表
+			//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+			function LodingList() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				//console.log("loginID为 : " + loginID);
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/selectGroupChatLogList',
+					async: true,
+					data: {
+						"type": 0,
+						"userId": loginID
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 1000, //超时时间设置为5秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						//console.log(status);
+						//if(status=="success"){}
+						var successString = JSON.parse(data);
+						//开始加入缓存
+						localStorage.setItem("selectGroupChatLogList", data);
+						console.log("返回的群聊记录数据内容为 : " + data);
+						var codelog = successString.code;
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(data.indexOf("userId") != -1 && codelog != "-1") {
+							refreshGet = successString.data.list.length;
+							var listdata = successString.data.list;
+							for(var i = 0; i < successString.data.list.length; i++) {
+								tiganStr = $("#radio-page2").html();
+								//替换相关的字段值 
+								tiganStr = del_html_tags(tiganStr, "{{num}}", i); //修改ID的值 
+
+								tiganStr = del_html_tags(tiganStr, "{{titleName}}", listdata[i].roomName); //添加题目内容 
+								tiganStr = del_html_tags(tiganStr, "{{roomID}}", listdata[i].roomId);
+								//								var picture = listdata[i].picture;
+								//								if(null != picture && undefined != picture) {
+								//									tiganStr = del_html_tags(tiganStr, "{{imgsrc}}", listdata[i].picture);
+								//								} else {
+								tiganStr = del_html_tags(tiganStr, "{{imgsrc}}", "images/w5.png");
+								//								}
+								$(".mui-table-view").append(tiganStr); //替换之后追加到选项中去
+							}
+						} else if(codelog == "-1") {
+							readingcachelist();
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('无群聊列表');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						readingcachelist();
+						return "获取数据失败：服务器错误！";
+					}
+				});
+
+			}
+
+			//动态数据加载广告
+			//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+			function LodingGuanggaoList() {
+				//请求数据
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/getAllAdvertising',
+					async: true,
+					data: {},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 1000, //超时时间设置为1秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的广告数据内容为 : " + data);
+						//开始加入缓存
+						localStorage.setItem("getAllAdvertising", data);
+						var codelog = successString.code;
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(codelog == "0") {
+							var listdata = successString.data;
+							for(var i = 0; i < listdata.length; i++) {
+								//if(listdata[i].type!="-1"){
+								tiganStrs = $("#radio-page3").html();
+								//替换相关的字段值 
+								tiganStrs = del_html_tags(tiganStrs, "{{num}}", listdata[i].id); //修改ID的值 
+
+								tiganStrs = del_html_tags(tiganStrs, "{{titlesName}}", listdata[i].content); //添加题目内容 
+								var linkUrl = listdata[i].linkUrl;
+								if(null != linkUrl && undefined != linkUrl) {
+									tiganStrs = del_html_tags(tiganStrs, "{{hrefurl}}", listdata[i].linkUrl);
+								} else {
+									tiganStrs = del_html_tags(tiganStrs, "{{hrefurl}}", "http://20eit.cn");
+								}
+								var picture = listdata[i].picture
+								if(null != picture && undefined != picture) {
+									tiganStrs = del_html_tags(tiganStrs, "{{imagesrc}}", listdata[i].picture);
+								} else {
+									tiganStrs = del_html_tags(tiganStrs, "{{imagesrc}}", "images/1.png");
+								}
+								$(".mui-slider-group").append(tiganStrs); //替换之后追加到选项中去
+								//}
+							}
+						} else if(codelog == "-1") {
+							readingcachegg();
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('无广告');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						readingcachegg();
+						return "获取数据失败：服务器错误！";
+					}
+				});
+
+			}
+
+			//获得slider插件对象
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 3000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+
+			//定时刷新得方法（2秒钟一次）
+			setInterval(LodingListrefresh, 2000);
+
+			function LodingListrefresh() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				if(refreshGet != "0") {
+					
+					mui.ajax({
+						type: "post",
+						url: ServerURL + '/selectGroupChatLogList',
+						async: true,
+						data: {
+							"type": 0,
+							"userId": loginID
+						},
+						dataType: "jsonp",
+						jsonp: "jsoncallback",
+						timeout: 1000, //超时时间设置为5秒；
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						success: function(data, status, xhr) {
+							var successString = JSON.parse(data);
+
+							var codelog = successString.code;
+							//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+							//获取题干模板 
+							if(data.indexOf("userId") != -1 && codelog != "-1") {
+								var listslength = successString.data.list.length;
+								if(listslength != refreshGet) {
+									//区域刷新（其中refreshGet会被再次赋值）
+									LodingList();
+									console.log("page2刷新一次！");
+								}
+							} else if(codelog == "-1") {
+
+							} else {
+
+							}
+							return data;
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log("error: " + type);
+							return "获取数据失败：服务器错误！";
+						}
+					});
+				}
+			}
+		}
+		//点击广告
+		function gotoguanggao(title, hrefs) {
+			mui.openWindow({
+				url: "createShow.html",
+				id: "createShow.html",
+				styles: {
+					//top:"40px",//新页面顶部位置
+				},
+				//打开窗口时传参方法
+				extras: {
+					title: title,
+					hrefs: hrefs
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//width: 
+						//height:
+					}
+				}
+			})
+		}
+
+		function gotoqunliao(title, roomid) {
+			mui.openWindow({
+				url: "qun-chat.html",
+				id: "qun-chat.html",
+				styles: {
+					//top:"40px",//新页面顶部位置
+				},
+				//打开窗口时传参方法
+				extras: {
+					title: title,
+					roomid: roomid
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		}
+		//缓存群聊记录方法
+		function readingcachelist() {
+			//请求数据
+			var loginID = localStorage.getItem("loginID");
+			var listdatas = localStorage.getItem("selectGroupChatLogList");
+			var str1 = JSON.parse(listdatas);
+			var listdata = str1.data.list;
+			console.log("读取群聊缓存数据：" + listdata);
+			for(var i = 0; i < listdata.length; i++) {
+				tiganStr = $("#radio-page2").html();
+				//替换相关的字段值 
+				tiganStr = del_html_tags(tiganStr, "{{num}}", i); //修改ID的值 
+
+				tiganStr = del_html_tags(tiganStr, "{{titleName}}", listdata[i].roomName); //添加题目内容 
+				tiganStr = del_html_tags(tiganStr, "{{roomID}}", listdata[i].roomId);
+				var picture = listdata[i].picture
+				//				if(null != picture && undefined != picture) {
+				//					tiganStr = del_html_tags(tiganStr, "{{imgsrc}}", listdata[i].picture);
+				//				} else {
+				tiganStr = del_html_tags(tiganStr, "{{imgsrc}}", "images/w5.png");
+				//				}
+				$(".mui-table-view").append(tiganStr); //替换之后追加到选项中去
+			}
+		}
+		//缓存广告记录方法
+		function readingcachegg() {
+			//请求数据
+			var loginID = localStorage.getItem("loginID");
+			var listdatas = localStorage.getItem("getAllAdvertising");
+			var str1 = JSON.parse(listdatas);
+			var listdata = str1.data;
+			console.log("读取广告缓存数据：" + listdata);
+			for(var i = 0; i < listdata.length; i++) {
+				tiganStrs = $("#radio-page3").html();
+				//替换相关的字段值 
+				tiganStrs = del_html_tags(tiganStrs, "{{num}}", listdata[i].id); //修改ID的值 
+
+				tiganStrs = del_html_tags(tiganStrs, "{{titlesName}}", listdata[i].content); //添加题目内容 
+				var linkUrl = listdata[i].linkUrl;
+				if(null != linkUrl && undefined != linkUrl) {
+					tiganStrs = del_html_tags(tiganStrs, "{{hrefurl}}", listdata[i].linkUrl);
+				} else {
+					tiganStrs = del_html_tags(tiganStrs, "{{hrefurl}}", "http://20eit.cn");
+				}
+				var picture = listdata[i].picture
+				if(null != picture && undefined != picture) {
+					tiganStrs = del_html_tags(tiganStrs, "{{imagesrc}}", listdata[i].picture);
+				} else {
+					tiganStrs = del_html_tags(tiganStrs, "{{imagesrc}}", "images/1.png");
+				}
+				$(".mui-slider-group").append(tiganStrs); //替换之后追加到选项中去
+			}
+		}
+		//自定义一个方法批量替换制定的字符 
+		function del_html_tags(str, reallyDo, replaceWith) {
+			var e = new RegExp(reallyDo, "g");
+			words = str.replace(e, replaceWith);
+			return words;
+		}
+	</script>
+
+</html>

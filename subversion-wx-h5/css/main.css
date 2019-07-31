@@ -1,0 +1,60 @@
+.mui-bar-nav{
+	background-color: #222222;
+}
+.mui-title{
+	color: #FAFAFA;
+	font-family: "新宋体";
+	/*font-weight: bold;*/
+	text-align: left;
+	font-size: large;
+}
+.mui-bar .mui-title{
+	left: 15px;
+}
+/*
+ 水平居中，居左，居右。
+ * */
+/* Alignment */ 
+.alignleft { 
+display: inline; 
+float: left; 
+} 
+.alignright { 
+display: inline; 
+float: right; 
+} 
+.aligncenter { 
+clear: both; 
+display: block; 
+margin:auto; 
+} 
+
+.mui-active .mui-tab-label,.mui-active .mui-icon{
+	color: #44bf18;
+}
+.mui-media-object1{
+	color: #000000;
+	display: inline;
+	float: left;
+}
+.mui-content>.mui-table-view:first-child {
+    margin-top: 0px;
+}	
+/*
+ * 通讯录
+ */
+.ellipsisSets{
+    /*   
+        1、得是以配置为inline-block的元素，或默认以block呈现的div、p元素  
+        2、强制不换行  
+        3、固定宽度  
+        4、超出部分隐藏  
+        5、超出部分以'...'结尾  
+    */  
+    display: inline-block;   
+    white-space: nowrap;  
+    width: 140px;   
+    overflow: hidden;   
+    text-overflow:ellipsis;  
+    font-size: 10sp;
+}

@@ -1,0 +1,383 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-table-view-cells {
+				padding: 8px 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<ul class="mui-table-view" style="margin-top: 6px; margin-bottom: 18px;">
+			<li class="mui-table-view-cell mui-media" id="myinfo">
+				<a href="javascript:;" title="个人信息" style="margin-right: 5px;float: left;width: 90%;">
+					<img class="mui-media-object mui-pull-left" id="touxiang" style="width: 50px;height: 50px" src="images/user-photo.png">
+					<div class="mui-media-body" style="font-size: medium">
+						<span id="myname">用户名</span>
+						<p class="mui-ellipsis" style="margin-top: 3px;">手机号：<span id="myphone"></span></p>
+					</div>
+				</a>
+				<img style="width: 32px;height: 32px;float: right;margin-top: 10px;" src="images/me-img1.png">
+			</li>
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 2px; margin-bottom: 18px;">
+			<li class="mui-table-view-cell mui-table-view-cells" id="mypurse">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/apz.png">
+					<div class="mui-media-object mui-pull-left">
+						我的钱包
+					</div>
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 2px; margin-bottom: 18px;">
+			<li class="mui-table-view-cell mui-table-view-cells" id="pengyouquan">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a76.png">
+					<div class="mui-media-object mui-pull-left">
+						我的朋友圈
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-table-view-cells" id="people">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/w5.png">
+					<div class="mui-media-object mui-pull-left">
+						附近的人
+					</div>
+				</a>
+			</li>
+			<!--
+			<li class="mui-table-view-cell mui-table-view-cells">
+				<img class="mui-media-object mui-pull-left" src="images/aay.png">
+				<div class="mui-media-object mui-pull-left">
+					我的收藏
+				</div>
+			</li>
+			            作者：1471846120@qq.com
+            	时间：2018-03-06
+            	描述：
+			<li class="mui-table-view-cell mui-table-view-cells" id="myfriend">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/ani.png">
+					<div class="mui-media-object mui-pull-left">
+						我的动态
+					</div>
+				</a>
+			</li>
+			 -->
+			<li class="mui-table-view-cell mui-table-view-cells" id="fenxiang">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/a2b.png">
+					<div class="mui-media-object mui-pull-left">
+						分享好友
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-table-view-cells" id="problem">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/set1.jpg">
+					<div class="mui-media-object mui-pull-left">
+						常见问题
+					</div>
+				</a>
+			</li>
+			<!--
+			<li class="mui-table-view-cell mui-table-view-cells" id="test">
+				<a href="javascript:;">
+				<img class="mui-media-object mui-pull-left" src="images/set1.jpg">
+				<div class="mui-media-object mui-pull-left">
+					测试
+				</div>
+				</a>
+			</li>
+			            作者：1471846120@qq.com
+            	时间：2018-04-09
+            	描述：
+           
+			<li class="mui-table-view-cell mui-table-view-cells" id="test1">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/set1.jpg">
+					<div class="mui-media-object mui-pull-left">
+						测试文件上传
+					</div>
+				</a>
+			</li>
+			 -->
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 2px; margin-bottom: 18px;">
+			<li class="mui-table-view-cell mui-table-view-cells" id="settings">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/set.jpg">
+					<div class="mui-media-object mui-pull-left">
+						设置
+					</div>
+				</a>
+			</li>
+		</ul>
+	</body>
+	<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		window.onload = function() {
+			var Myphone = localStorage.getItem("Myphone");
+			var Myname = localStorage.getItem("Myname");
+			var headImg = localStorage.getItem("headImg");
+			$("#myname").html(Myname);
+			$("#myphone").html(Myphone);
+			$("#touxiang").attr('src', headImg);
+		}
+		//个人资料
+		mui('#myinfo').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				//							url: "page1_chat.html",
+				//							id: "page1_chat.html",
+				url: "myset.html",
+				id: "myset.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//我的钱包页面跳转
+		mui('#mypurse').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				//							url: "page1_chat.html",
+				//							id: "page1_chat.html",
+				url: "my_purse.html",
+				id: "my_purse.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//常见问题页面跳转
+		mui('#problem').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				url: "problem.html",
+				id: "problem.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//设置页面跳转
+		mui('#settings').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				//							url: "page1_chat.html",
+				//							id: "page1_chat.html",
+				url: "setting.html",
+				id: "setting.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//附近的人跳转
+		mui('#people').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				url: "mpeople.html",
+				id: "mpeople.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+		//分享跳转
+		mui('#fenxiang').on("tap", "a", function(e) {
+			var title = this.getAttribute("title");
+			mui.openWindow({
+				url: "fenxiang.html",
+				id: "fenxiang.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+//		//朋友圈跳转
+//		mui('#pengyouquan').on("tap", "a", function(e) {
+//			var title = this.getAttribute("title");
+//			mui.openWindow({
+//				url: "friendster/friendster.html",
+//				id: "friendster.html",
+//				style: {},
+//				//打开窗口时传参方法
+//				extras: {
+//					title: title
+//				},
+//				show: {
+//					autoShow: true,
+//					aniShow: "slide-in-right",
+//					duration: 100
+//				},
+//				waiting: {
+//					autoShow: true,
+//					title: "正在加载中...",
+//					options: {
+//						//									width: 
+//						//									height:
+//					}
+//				}
+//			})
+//		})
+		//管理自己得朋友圈
+		mui('#pengyouquan').on("tap", "a", function(e) {
+			var loginID = localStorage.getItem("loginID");
+			localStorage.setItem("GetfID", loginID);
+			mui.openWindow({
+				url: "friendster/findex.html",
+				id: "friendster/findex.html",
+				style: {},
+				//打开窗口时传参方法
+				extras: {
+					//title: title
+				},
+				show: {
+					autoShow: true,
+					aniShow: "slide-in-right",
+					duration: 100
+				},
+				waiting: {
+					autoShow: true,
+					title: "正在加载中...",
+					options: {
+						//									width: 
+						//									height:
+					}
+				}
+			})
+		})
+
+//		//测试上传跳转
+//		mui('#test1').on("tap", "a", function(e) {
+//			var title = this.getAttribute("title");
+//			mui.openWindow({
+//				url: "upfiles.html",
+//				id: "upfiles.html",
+//				style: {},
+//				//打开窗口时传参方法
+//				extras: {
+//					title: title
+//				},
+//				show: {
+//					autoShow: true,
+//					aniShow: "slide-in-right",
+//					duration: 100
+//				},
+//				waiting: {
+//					autoShow: true,
+//					title: "正在加载中...",
+//					options: {
+//						//									width: 
+//						//									height:
+//					}
+//				}
+//			})
+//		})
+	</script>
+
+</html>

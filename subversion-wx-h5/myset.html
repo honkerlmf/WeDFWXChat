@@ -1,0 +1,419 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			input.mui-input-clear {
+				text-align: right;
+			}
+			
+			.mui-input-row {
+				border-bottom: solid 1px #cccccc;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div id="account" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>返回
+				</button>
+				<h1 class="mui-center mui-title">个人信息</h1>
+				<div style="height: 40px; float: right;padding-top: 5px;padding-right: 1px;"><input type="button" id="" onclick="imputinfo();" value="提交" style="line-height:18px;background-color: green; color: white; font-weight: bold;" /></div>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper" style="margin-top: 40px;">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a id="head" class="mui-navigate-right" onclick="xiugaitouxiang();">
+									<span style="margin: 0;">
+										头像
+									</span>
+									<span class="mui-pull-right head">
+									<img class="head-img mui-action-preview" style="width: 40px;height: 40px; margin-right: 15px;" id="head-img1" src="images/user-photo.png"/>
+								</span>
+								</a>
+							</li>
+							<div class="mui-input-row">
+								<label>昵称</label>
+								<input type="text" class="mui-input-clear" id="nicheng" value="">
+							</div>
+							<div class="mui-input-row">
+								<label>真实姓名</label>
+								<input type="text" class="mui-input-clear" id="xingming" value="任我行">
+							</div>
+						</ul>
+						<ul class="mui-table-view">
+							<div class="mui-input-row">
+								<label>身份证号</label>
+								<input type="number" id="sfz" class="mui-input-clear" value="88888888">
+							</div>
+							<div class="mui-input-row">
+								<label>手机号</label>
+								<input type="number" id="shouji" class="mui-input-clear" value="18601234567">
+							</div>
+							<div class="mui-input-row">
+								<label>家庭地址</label>
+								<input type="text" id="jiatingdizhi" class="mui-input-clear" value="北京市 通州区 xx村">
+							</div>
+							<div class="mui-input-row">
+								<label>情感状态</label>
+								<input type="text" id="qinggang" class="mui-input-clear" value="-">
+							</div>
+
+							<div class="mui-input-row">
+								<label>工作单位</label>
+								<input type="text" id="gonzuodw" class="mui-input-clear" value="-">
+							</div>
+							<!--
+							<div class="mui-input-row">
+								<label>上级单位</label>
+								<input type="text" class="mui-input-clear" value="-">
+							</div>
+							<div class="mui-input-row">
+								<label>所在部门</label>
+								<input type="text" class="mui-input-clear" value="-">
+							</div>
+							<div class="mui-input-row">
+								<label>工作岗位</label>
+								<input type="text" class="mui-input-clear" value="-">
+							</div>
+							            作者：1471846120@qq.com
+                            	时间：2018-04-08
+                            	描述：
+                            -->
+							<div class="mui-input-row">
+								<label>兴趣爱好</label>
+								<input type="text" id="xingqu" class="mui-input-clear" placeholder="每个兴趣请用;分隔" value="">
+							</div>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//动态数据显示（放在图片处理js前）
+		window.onload = function() {
+			var loginID = localStorage.getItem("loginID");
+			mui.ajax({
+				type: "post",
+				url: ServerURL + '/user/getUserById',
+				async: false,
+				data: {
+					//"id": "2b294a27bc87450f84556c70ffba5c01"
+					"id":  loginID
+				},
+				dataType: "jsonp",
+				jsonp: "jsoncallback",
+				timeout: 500, //超时时间设置为1秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data, status, xhr) {
+					var successString = JSON.parse(data);
+					console.log("返回的个人信息数据内容为 : " + data);
+					var codelog = successString.code;
+					//获取
+					if(data.indexOf("money") != -1 && codelog != "-1") {
+						var listdata = successString.data;
+
+						//替换相关的字段值 
+						$("#nicheng").val(listdata.realName);
+						$("#xingming").val(listdata.name);
+						$("#sfz").val(listdata.cardNum);
+						$("#shouji").val(listdata.phone);
+						$("#jiatingdizhi").val(listdata.address);
+						$("#qinggang").val(listdata.emotionalState);
+						//$("#danwei").val(listdata.company);
+						$("#gonzuodw").val(listdata.company);
+						//$("#bumeng").val(listdata.realName);
+						//$("#gangwei").val(listdata.realName);
+						var interestList = "";
+						if(listdata.interestList.length > 0) {
+							for(i = 0; i < listdata.interestList.length; i++) {
+								interestList += listdata.interestList[i] + ";";
+							}
+							$("#xingqu").val(interestList);
+						}
+						$("#xingqu").val("拼车");
+						//当前时间
+						//var m_date = new Date();
+						//头像显示
+						var headImg = listdata.headImg;
+						if(null != headImg && undefined != headImg) {
+							$("#head-img1").attr('src', headImg);
+						} else {}
+
+					} else if(codelog == "-1") {
+						mui.toast('网络连接错误！');
+					} else {
+						mui.toast('未能获取到数据！');
+					}
+					return data;
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log("error: " + type);
+					return "获取个人资料数据失败：服务器错误！";
+				}
+			});
+		}
+
+		function imputinfo() {
+			var loginIDs = localStorage.getItem("loginID");
+			//替换相关的字段值 
+			var tnicheng = $("#nicheng").val();
+			var txingming = $("#xingming").val();
+			var tsfz = $("#sfz").val();
+			var tshouji = $("#shouji").val();
+			var tjiatingdizhi = $("#jiatingdizhi").val();
+			var tqinggang = $("#qinggang").val();
+			var tgonzuodw = $("#gonzuodw").val();
+			//当前时间
+			var m_date = new Date();
+			//头像地址提交
+			var headImgs = localStorage.getItem("headImg");
+			var theadImg = "";
+			var headImg = $('#head-img1').attr("src");
+			if(null != headImg && undefined != headImg && "" != headImg) {
+				theadImg = headImg;
+			} else {
+				theadImg = headImgs;
+			}
+
+			var interestList = "[]";
+			var txingqu = $("#xingqu").val();
+			var isOKjiaoyan = isOK();
+			//mui.toast("提交校验信息：" + isOKjiaoyan);
+			if(isOKjiaoyan == "OK") {
+				//提交修改
+				mui.toast("tsfz：" + tsfz);
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/user/updateUser',
+					async: false,
+					data: {
+						"address": tjiatingdizhi,
+						"cardNum": tsfz,
+						"company": tgonzuodw,
+						"headImg": theadImg,
+						"id": loginIDs,
+						//"interestList": "[{}]",
+						//"longitudeLatitude": "string",
+						"name": txingming,
+						"phone": tshouji,
+						"realName": tnicheng
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 1000, //超时时间设置为1秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的个人信息修改内容为 : " + data);
+						var codelog = successString.code;
+						//获取
+						if(data.indexOf("成功") != -1 && codelog != "-1") {
+							var btnArray = ['确定', '取消'];
+							mui.confirm('个人资料修改成功：', '个人资料修改', btnArray, function(e) {
+								//更新缓存
+								localStorage.setItem("headImg",theadImg);
+								localStorage.setItem("realName", tnicheng);
+								localStorage.setItem("Myname", txingming);
+								if(e.index == 0) {
+									//提交后刷新页面
+									window.location.reload();
+								} else {
+									//提交后刷新页面
+									window.location.reload();
+								}
+							})
+
+						} else if(codelog == "-1") {
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('未能获取到修改结果！');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取个人资料数据失败：服务器错误！";
+					}
+				});
+			} else {
+				mui.toast("未能提交," + isOKjiaoyan);
+			}
+
+		}
+		//校验方法
+		var isOK = function jiaoyan() {
+			//
+			var jnicheng = $("#nicheng").val();
+			if(null != jnicheng && undefined != jnicheng && jnicheng.length > 2) {} else {
+				return "昵称必须大于2个字符且不为空！";
+			}
+			var jxingming = $("#xingming").val();
+			if(null != jxingming && undefined != jxingming && jxingming.length > 2) {} else {
+				return "姓名必须大于2个字符且不为空！";
+			}
+			var jsfz = $("#sfz").val();
+			if(null != jsfz && undefined != jsfz && jsfz.length == 18) {} else {
+				return "身份证必须为18位且不为空！";
+			}
+			//mui.toast(jsfz);
+			var jshouji = $("#shouji").val();
+			if(null != jshouji && undefined != jshouji && jshouji.length == 11) {} else {
+				return "请输入正确的手机号码！";
+			}
+			var jjiatingdizhi = $("#jiatingdizhi").val();
+			if(null != jjiatingdizhi && undefined != jjiatingdizhi && jjiatingdizhi.length > 5) {} else {
+				return "家庭地址必须大于5个字符且不为空！";
+			}
+			var jqinggang = $("#qinggang").val();
+			if(null != jqinggang && undefined != jqinggang && jqinggang.length > 1 && jqinggang.length < 4) {} else {
+				return "情感状态不正确！";
+			}
+			var jgonzuodw = $("#gonzuodw").val();
+			if(null != jgonzuodw && undefined != jgonzuodw && jgonzuodw.length > 2 && jgonzuodw.length < 30) {} else {
+				return "工作单位不正确！";
+			}
+			//头像地址提交
+			var headImg = $('#head-img1').attr("src");
+			if(null != headImg && undefined != headImg && "" != headImg) {} else {
+				return "头像不能为空";
+			}
+			var jxingqu = $("#xingqu").val();
+			if(null != jxingqu && undefined != jxingqu && jxingqu.length > 1) {} else {
+				return "兴趣爱好不能为空！";
+			}
+			return "OK";
+		}
+		//		{
+		//			"address": "成都市青羊区时代印象",
+		//			"cardNum": "500234199508184688",
+		//			"company": "环迅支付",
+		//			"headImg": "http://www.mftop.cn/content/plugins/kl_album/upload/201801/thum-4a443be85355fa31762302652ba3494520180118150306266673322.jpg",
+		//			"id": "2b294a27bc87450f84556c70ffba5c01",
+		//			"name": "测试用户1",
+		//			"phone": "18290209497",
+		//			"realName": "小小王2"
+		//		}
+		//修改头像开始
+		function xiugaitouxiang() {
+			page.imgUp();
+
+		}
+		var page = null;
+		page = {
+			imgUp: function() {
+				var m = this;
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+							title: "拍照"
+						},
+						{
+							title: "从相册中选择"
+						}
+					]
+				}, function(e) { //1 是拍照  2 从相册中选择  
+					switch(e.index) {
+						case 1:
+							appendByCamera();
+							break;
+						case 2:
+							appendByGallery();
+							break;
+					}
+				});
+			}
+			//摄像头  
+		}
+
+		// 拍照添加文件
+		function appendByCamera() {
+			plus.camera.getCamera().captureImage(function(e) {
+				console.log(e);
+				plus.io.resolveLocalFileSystemURL(e, function(entry) {
+					var path = entry.toLocalURL();
+					//替换图片
+					document.getElementById("head-img1").src = path;
+					//上传
+					upload();
+					//就是这里www.bcty365.com 
+				}, function(e) {
+					mui.toast("读取拍照文件错误：" + e.message);
+				});
+
+			});
+
+		}
+		// 从相册添加文件
+		function appendByGallery() {
+			plus.gallery.pick(function(path) {
+				document.getElementById("head-img1").src = path;
+				//上传
+				upload();
+			});
+
+		}
+
+		//服务端接口路径
+		var server = ServerURL + "/upload";
+		//获取图片元素
+		var files = document.getElementById('head-img1');
+		// 上传文件
+		function upload() {
+			console.log(files.src);
+			var wt = plus.nativeUI.showWaiting();
+			var task = plus.uploader.createUpload(server, {
+					method: "POST"
+				},
+				function(t, status) { //上传完成
+					if(status == 200) {
+						var responseText = t.responseText;
+						console.log(t);
+						if(responseText.indexOf("code") != -1) {
+							alert("上传失败：" + status);
+						} else {
+							alert("上传成功!");
+							console.log(t.responseText);
+							$("#head-img1").attr('src', t.responseText);
+						}
+						wt.close(); //关闭等待提示按钮
+					} else {
+						alert("上传失败：" + status);
+						wt.close(); //关闭等待提示按钮
+					}
+				}
+			);
+			//添加其他参数
+			task.addData("name", "test");
+			task.addFile(files.src, {
+				key: "file"
+			});
+			task.start();
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener("plusready", plusReady, false);
+		}
+	</script>
+
+</html>

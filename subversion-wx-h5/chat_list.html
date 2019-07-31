@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方新闻">
+						<img class="mui-media-object mui-pull-left" src="images/qq.png">
+						<div class="mui-media-body">
+							官方新闻
+							<p class="mui-ellipsis">最新更新发布，最新更新发布，最新更新发布。</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方团队">
+						<img class="mui-media-object mui-pull-left" src="images/qihoo.png">
+						<div class="mui-media-body">
+							官方团队
+							<p class="mui-ellipsis">团队人员招聘，团队人员招聘，团队人员招聘。</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方公众号">
+						<img class="mui-media-object mui-pull-left" src="images/weixin.png">
+						<div class="mui-media-body">
+							官方公众号
+							<p class="mui-ellipsis">公众号发布，公众号发布，最新更新发布。</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方团队">
+						<img class="mui-media-object mui-pull-left" src="images/set1.jpg">
+						<div class="mui-media-body">
+							官方团队
+							<p class="mui-ellipsis">团队人员招聘，团队人员招聘，团队人员招聘。</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" title="官方公众号">
+						<img class="mui-media-object mui-pull-left" src="images/set3.jpg">
+						<div class="mui-media-body">
+							官方公众号
+							<p class="mui-ellipsis">公众号发布，公众号发布，最新更新发布。</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		mui('.mui-table-view-cell').on("tap", "a", function(e) {
+			var title=this.getAttribute("title");
+					mui.openWindow({
+//							url: "page1_chat.html",
+//							id: "page1_chat.html",
+                            url: "im-chat.html",
+							id: "im-chat.html",
+							styles: {
+								//top:"40px",//新页面顶部位置
+							},
+							//打开窗口时传参方法
+							extras:{
+								title:title
+							},
+							show: {
+								autoShow: true,
+								aniShow: "slide-in-right",
+								duration: 100
+							},
+							waiting: {
+								autoShow: true,
+								title: "正在加载中...",
+								options:{
+//									width: 
+//									height:
+								}
+							}
+						})
+					})
+		
+	</script>
+
+</html>

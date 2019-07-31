@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+.divs{
+	margin: 5px;
+}
+.mui-table-view-cell{
+	text-align: left;
+	font-size: 0.85em;
+}
+		</style>
+	
+	<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">常见问题</h1>
+	</header>
+	<div class="mui-content">
+	    <div style="margin-top: 10px;text-align: center;">
+	    	<div><img src="images/set1.jpg" style="width: 56px;height: 56px;"/></div>
+	    	<div class="divs" style="font-size: 0.75em;">问题列表</div>
+	    	<div>
+			<ul class="mui-table-view mui-table-views">
+				<!--
+                	
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 1">
+			                常见问题 1
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 2"> 
+			                 常见问题 2
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 3">
+			                 常见问题 3
+			            </a>
+			        </li>
+			         <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 4">
+			                常见问题 4
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 5">
+			                 常见问题 5
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right" title="常见问题 6">
+			                 常见问题 6
+			            </a>
+			        </li>
+			                    作者：1471846120@qq.com
+                	时间：2018-03-27
+                	描述：
+                -->
+			    </ul>
+			    <ul class="mui-table-view mui-grid-view mui-grid-9">
+			        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			            <a href="#">
+			                <span class="mui-icon mui-icon-home"></span>
+			                <div class="mui-media-body">使用规则</div>
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			            <a href="#">
+			                <span class="mui-icon mui-icon-email"><span class="mui-badge mui-badge-red">1</span></span>
+			                <div class="mui-media-body">分享规则</div>
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			            <a href="#">
+			                <span class="mui-icon mui-icon-chatbubble"></span>
+			                <div class="mui-media-body">聊天问题</div>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
+	    </div>
+	</div>
+	</body>
+	<!--模板先加载-->
+		<script type="text/html" id="radio-page2">
+			<li class="mui-table-view-cell mui-table-view-celllist" id="chatlist{{num}}">
+			        <a class="mui-navigate-right" title="{{answer}}" problems="{{titles}}">
+			            {{titles}}
+			        </a>
+			</li>
+		</script>
+	<script type="text/javascript">
+		
+		window.onload = function() {
+			LodingList();
+		     //动态数据加载
+			//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+			function LodingList() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/getcommonProblemsList',
+					async: false,
+					data: {
+						
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 5000, //超时时间设置为5秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的问题内容为 : " + data);
+						var codelog =successString.code;
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(data.indexOf("question") != -1) {
+							var listdata = successString.data;
+							for(var i = 0; i < listdata.length; i++) {
+								tiganStr = $("#radio-page2").html();
+								//替换相关的字段值 
+								tiganStr = del_html_tags(tiganStr, "{{num}}", i); //修改ID的值 
+								
+								tiganStr = del_html_tags(tiganStr, "{{titles}}", listdata[i].question); //问题
+								tiganStr = del_html_tags(tiganStr, "{{answer}}", listdata[i].answer); //答案
+							
+								$(".mui-table-views").append(tiganStr); //替换之后追加到选项中去
+							}
+						} else if(codelog=="-1"||codelog.equals("-1")){
+							mui.toast('网络连接错误！');
+						}else {
+							mui.toast('问题列表无数据！');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取数据失败：服务器错误！";
+					}
+				});
+
+			}
+
+			//自定义一个方法批量替换制定的字符 
+			function del_html_tags(str, reallyDo, replaceWith) {
+				var e = new RegExp(reallyDo, "g");
+				words = str.replace(e, replaceWith);
+				return words;
+			}
+			
+			//问答
+			mui('.mui-table-view-celllist').on("tap", "a", function(e) {
+				//getuesrinfo();
+				var title = this.getAttribute("title");
+				var problems = this.getAttribute("problems");
+				mui.openWindow({
+					url: "problems.html",
+					id: "problems.html",
+					styles: {
+						//top:"40px",//新页面顶部位置
+					},
+					//打开窗口时传参方法
+					extras: {
+						title: title,
+						problems: problems
+					},
+					show: {
+						autoShow: true,
+						aniShow: "slide-in-right",
+						duration: 100
+					},
+					waiting: {
+						autoShow: true,
+						title: "正在加载中...",
+						options: {
+							//width: 
+							//height:
+						}
+					}
+				})
+			})
+			//问答
+			mui('.mui-table-view-cell').on("tap", "a", function(e) {
+				//getuesrinfo();
+				var title = this.getAttribute("title");
+				var problems = this.getAttribute("problems");
+				mui.openWindow({
+					url: "my_purses.html",
+					id: "my_purses.html",
+					styles: {
+						//top:"40px",//新页面顶部位置
+					},
+					//打开窗口时传参方法
+					extras: {
+						title: title,
+						problems: problems
+					},
+					show: {
+						autoShow: true,
+						aniShow: "slide-in-right",
+						duration: 100
+					},
+					waiting: {
+						autoShow: true,
+						title: "正在加载中...",
+						options: {
+							//width: 
+							//height:
+						}
+					}
+				})
+			})
+		}
+	</script>
+</html>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.titles {
+				margin-top: 12px;
+			}
+			
+			.mui-bar-nav {
+				background-color: #222222;
+			}
+			
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 5px;
+			}
+			
+			.setinfo {
+				float: right;
+				max-width: 86px;
+				max-height: 46px;
+				background: #C0C0C0;
+				border-radius: 3px;
+				padding: 2px;
+				font-size: 0.6em;
+				word-wrap: break-word;
+				word-break: break-all;
+				color: #333333;
+				line-height: 15px;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				position: relative;
+				display: block;
+				overflow: hidden;
+				margin: -11px -15px;
+				padding: inherit;
+				white-space: inherit;
+				text-overflow: ellipsis;
+				color: inherit;
+			}
+			
+			.container {
+				margin-top: 41px;
+			}
+			
+			.mui-bar-nav.mui-bar .mui-icon {
+				margin-right: -10px;
+				margin-left: -10px;
+				padding-right: 10px;
+				padding-left: 5px;
+			}
+			
+			.mui-btn,
+			button,
+			input[type=button],
+			input[type=reset],
+			input[type=submit] {
+				border: 0px solid #ccc;
+			}
+			
+			.fx_address {
+				float: left;
+				width: 100%;
+				margin-top: 6px;
+				height: 35px;
+				line-height: 35px;
+				font-size: 0.85em;
+				color: #b8b8b8;
+				background: url(images/dingwei.png) no-repeat 5px center;
+				background-size: 18px 20px;
+				background-color: #FFFFFF;
+				text-indent: 25px
+			}
+			
+			.addimages {
+				height: 60px;
+				width: 60px;
+				margin-left: 1px;
+				margin-right: 1px;
+			}
+			
+			.addimagess {
+				height: 60px;
+				width: 60px;
+				margin-left: 1px;
+				margin-right: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/image-new.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<div style="height: 40px; float: left;">
+				<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			</div>
+			<div style="height: 40px; float: left;" class="titles"><span style="color: white;font-size: 0.9em;">发布朋友圈动态</span></div>
+			<div style="height: 40px; float: right;padding-top: 7px;padding-right: 3px;"><input type="button" id="" onclick="fabupenyouquan();" value="发布" style="line-height:18px;background-color: green; color: white; font-weight: bold;font-size: 13px;" /></div>
+		</header>
+		<form class="mui-input-group" style="margin-top: 40px;">
+			<div>
+				<textarea class="mui-input-row" id="contentpyq" rows="50" cols="50" style="height: 150px;font-size:15px;" placeholder="这一刻你想说..."></textarea>
+				<div id="addimageslist" style="margin-left: 6px;margin-right: 6px;margin-top: 5px;"><img id="addimages" class="addimages" src="../images/iconfont-tianjia.png" /></div>
+				<div style="background-color: #FFFFFF;">
+					<div class="fx_address"></div>
+				</div>
+			</div>
+		</form>
+
+		<!--模板先加载-->
+		<script type="text/html" id="radio-img">
+			<img class="addimagess" src="{{imgsrclist}}" />
+		</script>
+		<script>
+			mui.plusReady(function() {
+				plus.geolocation.getCurrentPosition(MapPoint, function(e) {
+					mui.toast("error:" + e.message);
+				})
+			})
+
+			function MapPoint(position) {
+				//var Lon = position.coords.longitude; //获取经度  
+				//var Lat = position.coords.latitude; //获取纬度  
+				var address = "当前位置：" + position.address.province + "," + position.address.city + "," + position.address.district + "," + position.address.street + "," + position.address.streetNum;
+				//mui.toast("经度:"+Lon + ", 纬度 :" + Lat);
+				//mui.toast(address);
+				$('.fx_address').html(address);
+			}
+		</script>
+		<!--
+        	作者：1471846120@qq.com
+        	时间：2018-03-23
+        	描述：多图片上传
+        -->
+		<script type="text/javascript">
+			var upimg = "";
+			mui.plusReady(function() {
+				var o = imageTool.options;
+				o.uploadUrl = ServerURL + '/upload'; //图片上传链接
+
+				o.multiple = true; //默认只上传一张图片 ，如果要选择多张，请设置为true
+				o.maxPicsCount = 1; //默认一次最多选择10张图片,
+				o.ZoomBox = 1200; //缩放宽高，默认1200px,横图缩放宽度，高度根据比例计算，同理竖图
+				o.ZoomQuality = 80; //压缩图片的质量
+				o.isUpload = true; //默认不上传
+				var mine = plus.webview.currentWebview();
+				var btn = document.querySelector("img.addimages");
+				btn.addEventListener('touchend', function() {
+					if(!imageTool.options.uploadUrl) {
+						mui.alert('请填写图片上传链接');
+						return;
+					}
+					// 弹出系统选择按钮框
+					plus.nativeUI.actionSheet({
+							cancel: "取消",
+							buttons: [{
+								title: "从手机相册选择"
+							}, {
+								title: '拍照'
+							}]
+						},
+						function(e) {
+							console.log(JSON.stringify(e));
+							if(e.index == 1) { //点击从相册选择
+								console.log("相册选择");
+								getPics();
+							} else if(e.index == 2) {
+								console.log("拍照");
+								getPics(true);
+							}
+						}
+					);
+				})
+			});
+			//调用图片方法 isCamera是否为拍照
+			//image-new.js封装了imageTool对象
+			function getPics(isCamera) {
+				//				plus.nativeUI.showWaiting();
+				//可以设置mask
+				//main.setStyle({
+				//	mask: '#ccc'
+				//});
+				if(!isCamera) {
+					imageTool.galleryImgs(doPics);
+				} else {
+					imageTool.camera(doPics);
+				}
+			}
+
+			function doPics(err, list) {
+				//因为dcloud官方上传地址上传后返回的格式并不是插件定义的规范，
+				//"responseText":"{\"strings\":{\"uid\":\"39106184\",\"client\":\"HelloH5+\"},\"error\":\"0\",\"files\":{\"phillyx_72192431\":{\"name\":\"1464411747097.jpg\",\"url\":\"files\\/1464411747097.jpg\",\"type\":\"image\\/jpeg\",\"size\":245329}}}"
+				//所以list内部数据都为空
+				var err = '';
+				var files = [];
+				if(err) {
+					console.log(err);
+				}
+				if(list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if(item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				//console.log('上传图片地址：' + JSON.stringify(files));
+
+				//关掉mask上传任务
+				//main.setStyle({
+				//	mask: 'none'
+				//});
+				if(files.length > 0) {
+					//在这里做项目的逻辑，可以打开新页面将files传过去
+					//files[1]
+					console.log("服务器返回图片列表:" + JSON.stringify(files));
+					//ADD 添加的显示方法
+					//添加前清除和保存+图片
+					//保存
+					addimageslist = $("#addimageslist").html();
+					//清除
+					//$("#addimageslist").html("");
+					//清除存入全局的图片字段
+					upimg = "";
+					//清除新添加的所有图片但不删除+号有事件的图片
+					$("img").remove(".addimagess");
+					for(var i = 0; i < files.length; i++) {
+						tiganStr = $("#radio-img").html();
+						//替换相关的字段值 
+						tiganStr = del_html_tags(tiganStr, "{{imgsrclist}}", files[i]); //添加题目内容 
+						$('#addimageslist').prepend(tiganStr); //替换之后追加到选项中去(之前内容前)
+						if(i > 1) {
+							upimg = upimg + "," + files[i];
+						} else {
+							upimg += files[i];
+						}
+
+					}
+					//console.log("原内容:"+addimageslist);
+					//添加
+					//$("#addimageslist").append(addimageslist);
+				}
+			};
+			//自定义一个方法批量替换制定的字符 
+			function del_html_tags(str, reallyDo, replaceWith) {
+				var e = new RegExp(reallyDo, "g");
+				words = str.replace(e, replaceWith);
+				return words;
+			}
+			//发布朋友圈
+			function fabupenyouquan() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				var contentpyq = $("#contentpyq").val();
+				//获取当前时间
+				var date1 = new Date();
+				//JSON格式时间：2018-03-29T09:50:38.017Z
+				var newtimes1 = date1.toJSON();
+				console.log("upimg为 : " + upimg);
+				mui.ajax({
+						type: "post",
+						url: ServerURL + '/addActiviti',
+						async: true,
+						data: {
+							"content": contentpyq,
+							"creatTime": newtimes1,
+							"image": upimg,
+							"userId": loginID
+						},
+						dataType: "jsonp",
+						jsonp: "jsoncallback",
+						timeout: 1000, //超时时间设置为1秒；
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						success: function(data, status, xhr) {
+							var successString = JSON.parse(data);
+							console.log("返回的发布朋友圈数据内容为 : " + data);
+							var codelog = successString.code;
+							//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+							//获取题干模板 
+							if(data.indexOf("userId") != -1 && codelog != "-1") {
+								mui.toast('朋友圈动态发布成功！');
+								plus.webview.getWebviewById('friendster.html').reload();
+								mui.back();
+								}
+								else if(codelog == "-1") {
+									mui.toast('网络连接错误！');
+								} else {
+									mui.toast('发布失败！');
+								}
+								return data;
+							},
+							error: function(xhr, type, errorThrown) {
+								console.log("error: " + type);
+								mui.toast('发布超时！');
+								return "获取数据失败：服务器错误！";
+							}
+						});
+
+				}
+		</script>
+
+	</body>
+
+</html>

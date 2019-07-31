@@ -1,0 +1,11 @@
+.divs{
+	margin: 5px;
+}
+.buttons{
+	margin: 15px;
+	width: auto;
+}
+.mui-table-view-cell{
+	text-align: left;
+	font-size: 0.75em;
+}

@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/my_purse.css" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.8.3.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 class="mui-title">我的钱包</h1>
+			<a href="my_purses.html" style="float: right;margin-top: 10px; font-size: 0.65em;">颠覆币明细</a>
+		</header>
+		<div style="margin-top: 40px;text-align: center;">
+			<div><img src="images/apz.png" style="margin-top: 40px;" /></div>
+			<div class="divs" style="font-size: 1em;">我的颠覆币</div>
+			<div class="divs" id="mypurse" style="font-size: 1.5em;font-weight: bold;"></div>
+			<div class="buttons"><input type="button" id="" value="查看说明" style="width: 98%;line-height:28px;background-color: green; color: white; font-weight: bold;font-size: 16px;" /></div>
+			<div class="lists">
+				<ul class="mui-table-view">
+					<!--	
+			        <li class="mui-table-view-cell">
+			        	<span>流水号:001:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <span>流水号:002:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			           <span>流水号:003:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			         <li class="mui-table-view-cell">
+			            <span>流水号:004:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <span>流水号:005:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <span>流水号:006:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			         <li class="mui-table-view-cell">
+			            <span>流水号:007:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <span>流水号:008:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <span>流水号:009:分享App</span>
+			        	<span id="spancolor">
+			        		颠覆币 增加50
+			        	</span>
+			        	<span style="float: right;">2018年3月5日 </span>
+			        </li>
+			                                     作者：1471846120@qq.com
+                    	时间：2018-04-02
+                    	描述：
+                    -->
+				</ul>
+			</div>
+		</div>
+		<!--模板-->
+		<script type="text/html" id="radio-tigan">
+			<li class="mui-table-view-cell">
+				<span>{{titleId}}</span>
+				<span id="spancolor">
+			        		{{titleContent}}
+			        	</span>
+				<span style="float: right;">{{titleDate}} </span>
+			</li>
+		</script>
+		<script type="text/javascript">
+			window.onload = function() {
+				LodingList();
+			}
+			//动态数据加载
+			//相关的处理事件，动态获取时只需要将for循环替换为AJAX的SUCCESS事件中去就好了。 
+			function LodingList() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				console.log("loginID为 : " + loginID);
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/user/getUserById',
+					async: false,
+					data: {
+						"id": loginID
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 800, //超时时间设置为0.8秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						var codelog = successString.code;
+						console.log("返回的个人信息数据内容为 : " + data);
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(data.indexOf("name") != -1) {
+							var money = successString.data.money;
+							$("#mypurse").html(money + "个");
+						} else if(codelog == "-1" || codelog.equals("-1")) {
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('无群聊列表');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取数据失败：服务器错误！";
+					}
+				});
+
+				//请求list消费数据
+				mui.ajax({
+					type: "post",
+					url: ServerURL + '/user/selectUserRecord',
+					async: false,
+					data: {
+						"userId": loginID
+					},
+					dataType: "jsonp",
+					jsonp: "jsoncallback",
+					timeout: 1000, //超时时间设置为1秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data, status, xhr) {
+						var successString = JSON.parse(data);
+						console.log("返回的list消费数据内容为 : " + data);
+						var codelog = successString.code;
+						//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+						//获取题干模板 
+						if(codelog == "0") {
+							var listdata = successString.data;
+							for(var i = 0; i < listdata.length; i++) {
+								tiganStrs = $("#radio-tigan").html();
+								//替换相关的字段值 
+								tiganStrs = del_html_tags(tiganStrs, "{{titleId}}", "流水号:" + listdata[i].id); //修改流水账号ID的值 
+
+								var count = listdata[i].value;
+								if(count > 0) {
+									tiganStrs = del_html_tags(tiganStrs, "{{titleContent}}", listdata[i].described + "增加" + listdata[i].value); //添加题目内容1
+								} else {
+									tiganStrs = del_html_tags(tiganStrs, "{{titleContent}}", listdata[i].described + "消费" + listdata[i].value); //添加题目内容2
+								}
+								var dateSet = new Date(listdata[i].createTime);
+								var year = dateSet.getFullYear();
+								var mon = dateSet.getMonth() + 1;
+								var day = dateSet.getDate();
+								tiganStrs = del_html_tags(tiganStrs, "{{titleDate}}", year+'年'+mon+"月"+day+"日"); //添加题目内容2
+								$(".mui-table-view").append(tiganStrs); //替换之后追加到选项中去
+							}
+						} else if(codelog == "-1") {
+							mui.toast('网络连接错误！');
+						} else {
+							mui.toast('无消费数据！');
+						}
+						return data;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log("error: " + type);
+						return "获取数据失败：服务器错误！";
+					}
+				});
+			}
+			//自定义一个方法批量替换制定的字符 
+			function del_html_tags(str, reallyDo, replaceWith) {
+				var e = new RegExp(reallyDo, "g");
+				words = str.replace(e, replaceWith);
+				return words;
+			}
+		</script>
+	</body>
+
+</html>

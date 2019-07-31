@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.imageviewer.css" rel="stylesheet" />
+
+		<style>
+			.mui-title {
+				: #FAFAFA;
+				font-family: "新宋体";
+				font-weight: bold;
+				text-align: left;
+				font-size: medium;
+				color: white;
+			}
+			
+			.mui-bar-nav {
+				background-color: #222222;
+			}
+			
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			
+			footer {
+				position: fixed;
+				width: 100%;
+				height: 50px;
+				min-height: 50px;
+				border-top: solid 1px #bbb;
+				left: 0px;
+				bottom: 0px;
+				overflow: hidden;
+				padding: 0px 50px;
+				background-color: #fafafa;
+			}
+			
+			.footer-left {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				left: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 4px;
+			}
+			
+			.footer-right {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				right: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 5px;
+				display: inline-block;
+			}
+			
+			.footer-center {
+				height: 100%;
+				padding: 5px 0px;
+			}
+			
+			.footer-center [class*=input] {
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+			}
+			
+			.footer-center .input-text {
+				background: #fff;
+				border: solid 1px #ddd;
+				padding: 10px !important;
+				font-size: 16px !important;
+				line-height: 18px !important;
+				font-family: verdana !important;
+				overflow: hidden;
+			}
+			
+			.footer-center .input-sound {
+				background-color: #eee;
+			}
+			
+			.mui-content {
+				height: 100%;
+				padding: 44px 0px 50px 0px;
+				overflow: auto;
+				background-color: #eaeaea;
+			}
+			
+			#msg-list {
+				padding-top: 40px;
+				padding-bottom: 45px;
+				height: 100%;
+				overflow: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+			
+			.msg-item {
+				padding: 8px;
+				clear: both;
+			}
+			
+			.msg-item .mui-item-clear {
+				clear: both;
+			}
+			
+			.msg-item .msg-user {
+				width: 38px;
+				height: 38px;
+				border: solid 1px #d3d3d3;
+				display: inline-block;
+				background: #fff;
+				border-radius: 3px;
+				vertical-align: top;
+				text-align: center;
+				float: left;
+				padding: 3px;
+				color: #ddd;
+			}
+			
+			.msg-item .msg-user-img {
+				width: 38px;
+				height: 38px;
+				display: inline-block;
+				border-radius: 3px;
+				vertical-align: top;
+				text-align: center;
+				float: left;
+				color: #ddd;
+			}
+			
+			.msg-user-imgs {
+				width: 38px;
+				height: 38px;
+				display: inline-block;
+				border-radius: 3px;
+				vertical-align: top;
+				text-align: center;
+				float: right;
+				color: #ddd;
+			}
+			
+			.msg-item .msg-content {
+				display: inline-block;
+				border-radius: 5px;
+				border: solid 1px #d3d3d3;
+				background-color: #FFFFFF;
+				color: #333;
+				padding: 8px;
+				vertical-align: top;
+				font-size: 15px;
+				position: relative;
+				margin: 0px 8px;
+				max-width: 75%;
+				min-width: 35px;
+				float: left;
+			}
+			
+			.msg-item .msg-content .msg-content-inner {
+				overflow-x: hidden;
+			}
+			
+			.msg-item .msg-content .msg-content-arrow {
+				position: absolute;
+				border: solid 1px #d3d3d3;
+				border-right: none;
+				border-top: none;
+				background-color: #FFFFFF;
+				width: 10px;
+				height: 10px;
+				left: -5px;
+				top: 12px;
+				-webkit-transform: rotateZ(45deg);
+				transform: rotateZ(45deg);
+			}
+			
+			.msg-item-self .msg-user,
+			.msg-item-self .msg-content {
+				float: right;
+			}
+			
+			.msg-item-self .msg-content .msg-content-arrow {
+				left: auto;
+				right: -5px;
+				-webkit-transform: rotateZ(225deg);
+				transform: rotateZ(225deg);
+			}
+			
+			.msg-item-self .msg-content,
+			.msg-item-self .msg-content .msg-content-arrow {
+				background-color: #4CD964;
+				color: #fff;
+				border-color: #2AC845;
+			}
+			
+			footer .mui-icon {
+				color: #000;
+			}
+			
+			footer .mui-icon:active {
+				color: #007AFF !important;
+			}
+			
+			footer .mui-icon-paperplane:before {
+				content: "发送";
+			}
+			
+			footer .mui-icon-paperplane {
+				/*-webkit-transform: rotateZ(45deg);
+				transform: rotateZ(45deg);*/
+				font-size: 16px;
+				word-break: keep-all;
+				line-height: 100%;
+				padding-top: 6px;
+				color: rgba(0, 135, 250, 1);
+			}
+			
+			#msg-sound {
+				-webkit-user-select: none !important;
+				user-select: none !important;
+			}
+			
+			.rprogress {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 140px;
+				height: 140px;
+				margin-left: -70px;
+				margin-top: -70px;
+				background-image: url(images/set1.jpg);
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: 30px 30px;
+				background-color: rgba(0, 0, 0, 0.7);
+				border-radius: 5px;
+				display: none;
+				-webkit-transition: .15s;
+			}
+			
+			.rschedule {
+				background-color: rgba(0, 0, 0, 0);
+				border: 5px solid rgba(0, 183, 229, 0.9);
+				opacity: .9;
+				border-left: 5px solid rgba(0, 0, 0, 0);
+				border-right: 5px solid rgba(0, 0, 0, 0);
+				border-radius: 50px;
+				box-shadow: 0 0 15px #2187e7;
+				width: 46px;
+				height: 46px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -23px;
+				margin-top: -23px;
+				-webkit-animation: spin 1s infinite linear;
+				animation: spin 1s infinite linear;
+			}
+			
+			.r-sigh {
+				display: none;
+				border-radius: 50px;
+				box-shadow: 0 0 15px #2187e7;
+				width: 46px;
+				height: 46px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -23px;
+				margin-top: -23px;
+				text-align: center;
+				line-height: 46px;
+				font-size: 40px;
+				font-weight: bold;
+				color: #2187e7;
+			}
+			
+			.rprogress-sigh {
+				background-image: none !important;
+			}
+			
+			.rprogress-sigh .rschedule {
+				display: none !important;
+			}
+			
+			.rprogress-sigh .r-sigh {
+				display: block !important;
+			}
+			
+			.rsalert {
+				font-size: 12px;
+				color: #bbb;
+				text-align: center;
+				position: absolute;
+				border-radius: 5px;
+				width: 130px;
+				margin: 5px 5px;
+				padding: 5px;
+				left: 0px;
+				bottom: 0px;
+			}
+			
+			@-webkit-keyframes spin {
+				0% {
+					-webkit-transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+				}
+			}
+			
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+			
+			#h {
+				background: #fff;
+				border: solid 1px #ddd;
+				padding: 10px !important;
+				font-size: 16px !important;
+				font-family: verdana !important;
+				line-height: 18px !important;
+				overflow: visible;
+				position: absolute;
+				left: -1000px;
+				right: 0px;
+				word-break: break-all;
+				word-wrap: break-word;
+			}
+			
+			.cancel {
+				background-color: darkred;
+			}
+			
+			.mui-bar-nav.mui-bar .mui-icon {
+				margin-right: -10px;
+				margin-left: -10px;
+				padding-right: 10px;
+				padding-left: 5px;
+			}
+			
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+			
+			.mui-popover {
+				height: 90px;
+				width: 90px;
+				text-align: center;
+			}
+			
+			.mui-table-view-cell {
+				position: relative;
+				overflow: hidden;
+				padding: 10px 5px;
+				-webkit-touch-callout: none;
+				font-size: 0.9em;
+			}
+			
+			.mui-table-view-cell:after {
+				left: 1px;
+			}
+		</style>
+	</head>
+
+	<body contextmenu="return false;">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+			<div style="height: 40px; float: right;">
+				<a id="menu" class=" mui-icon mui-icon-settings" style="color: #EAEAEA;" href="#topPopover"> </a>
+			</div>
+		</header>
+		<pre id='h'></pre>
+		<script id='msg-template' type="text/template">
+			<% for(var i in record){ var item=record[i]; %>
+			<div class="msg-item msg-itemss <%= (item.sender=='self'?' msg-item-self':'') %>" msg-type='<%=(item.type)%>' msg-content='<%=(item.content)%>'>
+				<% if(item.sender=='self' ) { %>
+				<img class="msg-user-imgs logoinfo" src="<%=(item.logo)%>" alt="<%=(item.pid)%>" />
+				<% } else { %>
+				<img class="msg-user-img logoinfo" src="<%=(item.logo)%>" alt="<%=(item.pid)%>" />
+				<% } %>
+				<div class="msg-content">
+					<div class="msg-content-inner">
+						<% if(item.type=='text' ) { %>
+						<%=( item.content|| '&nbsp;&nbsp;') %>
+						<% } else if(item.type=='image' ) { %>
+						<img class="msg-content-image" src="<%=(item.content)%>" style="max-width: 100px;" />
+						<% } else if(item.type=='sound' ) { %>
+						<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
+						<span class="play-state">点击播放</span>
+						<% } %>
+					</div>
+					<div class="msg-content-arrow"></div>
+				</div>
+				<div class="mui-item-clear"></div>
+			</div>
+			<% } %>
+		</script>
+		<div class="mui-content">
+			<div id='msg-list'>
+			</div>
+		</div>
+		<footer>
+			<div class="footer-left">
+				<i id='msg-image' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+			</div>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+				<button id='msg-sound' type="button" class='input-sound' style="display: none;">按住说话</button>
+			</div>
+			<label for="" class="footer-right">
+				<i id='msg-type' class="mui-icon mui-icon-mic"></i>
+			</label>
+		</footer>
+		<div id='sound-alert' class="rprogress">
+			<div class="rschedule"></div>
+			<div class="r-sigh">!</div>
+			<div id="audio_tips" class="rsalert">手指上滑，取消发送</div>
+		</div>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a href="#" onclick="selectinfo();">群成员</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#" onclick="exitxx();">退出群聊</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">Item3</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.imageViewer.js"></script>
+		<script src="js/arttmpl.js"></script>
+		<script src="js/ServerURL.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			var loginID = localStorage.getItem("loginID");
+			var headImg = localStorage.getItem("headImg");
+			var roomid;
+			var titleName;
+			var record = [];
+			mui.plusReady(function() {
+				//获取传值对象
+				var cw = plus.webview.currentWebview();
+				titleName = cw.title;
+				roomid = cw.roomid;
+				//获取对象
+				var header = document.querySelector(".mui-title");
+				header.innerText = titleName;
+				//
+				console.log("sid : " + loginID + " 群聊房间roomid : " + roomid);
+
+			})
+			/**
+			 * 放回指定页面，并且刷新指定页面
+			 * @param {Object} pageId 指定页面ID
+			 */
+			mui.app_refresh = function(pageId) {
+					if(!pageId == null) {
+						var _page = plus.webview.getWebviewById(pageId);
+						if(_page) {
+							_page.reload(true);
+						}
+					}
+				}
+				(function($, doc) {
+					var MIN_SOUND_TIME = 800;
+					$.init({
+						gestureConfig: {
+							tap: true, //默认为true
+							doubletap: true, //默认为false
+							longtap: true, //默认为false
+							swipe: true, //默认为true
+							drag: true, //默认为true
+							hold: true, //默认为false，不监听
+							release: true //默认为false，不监听
+						}
+					});
+					template.config('escape', false);
+
+					if(mui.os.ios) {
+						// 解决在ios上fixed元素focusin时位置出现错误的问题 
+						document.addEventListener('DOMContentLoaded', function() {
+							var footerDom = document.querySelector('footer');
+
+							document.addEventListener('focusin', function() {
+								footerDom.style.position = 'absolute';
+							});
+							document.addEventListener('focusout', function() {
+								footerDom.style.position = 'fixed';
+							});
+						});
+					}
+
+					$.plusReady(function() {
+						plus.webview.currentWebview().setStyle({
+							softinputMode: "adjustResize"
+						});
+						var showKeyboard = function() {
+							if($.os.ios) {
+								var webView = plus.webview.currentWebview().nativeInstanceObject();
+								webView.plusCallMethod({
+									"setKeyboardDisplayRequiresUserAction": false
+								});
+							} else {
+								var Context = plus.android.importClass("android.content.Context");
+								var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+								var main = plus.android.runtimeMainActivity();
+								var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+								imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+								//var view = ((ViewGroup)main.findViewById(android.R.id.content)).getChildAt(0);
+								imm.showSoftInput(main.getWindow().getDecorView(), InputMethodManager.SHOW_IMPLICIT);
+								//alert("ll");
+							}
+						};
+						//初始化请求消息列表
+						//sender类型：sender: 'zs', 接受者 sender: 'self',发送者
+						//var record = [];
+						//demo格式
+						//var record = [{
+						//	sender: 'self',
+						//	type: 'text',
+						//	content: 'Hi，我是 测试消息！'
+						//	}];
+						// 请求群聊列表记录
+						mui.ajax({
+							type: "post",
+							url: ServerURL + '/selectGroupChatLog',
+							async: false,
+							data: {
+								"pageNum": 1,
+								"pageSize": 100,
+								"roomId": roomid
+							},
+							dataType: "jsonp",
+							jsonp: "jsoncallback",
+							timeout: 1000, //超时时间设置为1秒；
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							success: function(data, status, xhr) {
+								var successString = JSON.parse(data);
+								console.log("群聊列表对话数据内容为 : " + data);
+								//开始加入缓存(依据房间id)
+								localStorage.setItem(roomid, data);
+								var codelog = successString.code;
+								//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+								//获取题干模板 
+								if(codelog == "0") {
+									var listdata = successString.data.list;
+									for(var i = 0; i <listdata.length ; i++) {
+										//默认他人的消息
+										var senders = "";
+										if(listdata[i].userId == loginID) {
+											senders = "self";
+										} else {
+											senders = "zs";
+										}
+										var types = "text";
+										var contents = "";
+										if(listdata[i].type == 0) {
+											types = "text";
+											contents = listdata[i].content;
+										} else if(listdata[i].type == 1) {
+											types = "image";
+											contents = listdata[i].picture;
+										} else if(listdata[i].type == 2) {
+											types = "sound";
+											contents = listdata[i].picture;
+										}
+
+										record.push({
+											sender: senders,
+											type: types,
+											content: contents,
+											logo: listdata[i].headImg,
+											pid: listdata[i].userId
+										});
+									}
+								} else if(codelog == "-1") {
+									//读取缓存
+									readingcache();
+									mui.toast('网络连接错误！');
+								} else {
+									//读取缓存
+									readingcache();
+									mui.toast('无群聊列表记录');
+								}
+								return data;
+							},
+							error: function(xhr, type, errorThrown) {
+								//读取缓存
+								readingcache();
+								console.log("error: " + type);
+								return "获取数据失败：服务器错误！";
+							}
+						});
+						var ui = {
+							body: doc.querySelector('body'),
+							footer: doc.querySelector('footer'),
+							footerRight: doc.querySelector('.footer-right'),
+							footerLeft: doc.querySelector('.footer-left'),
+							btnMsgType: doc.querySelector('#msg-type'),
+							boxMsgText: doc.querySelector('#msg-text'),
+							boxMsgSound: doc.querySelector('#msg-sound'),
+							btnMsgImage: doc.querySelector('#msg-image'),
+							areaMsgList: doc.querySelector('#msg-list'),
+							boxSoundAlert: doc.querySelector('#sound-alert'),
+							h: doc.querySelector('#h'),
+							content: doc.querySelector('.mui-content')
+						};
+						ui.h.style.width = ui.boxMsgText.offsetWidth + 'px';
+						//alert(ui.boxMsgText.offsetWidth );
+						var footerPadding = ui.footer.offsetHeight - ui.boxMsgText.offsetHeight;
+						var msgItemTap = function(msgItem, event) {
+							var msgType = msgItem.getAttribute('msg-type');
+							var msgContent = msgItem.getAttribute('msg-content')
+							if(msgType == 'sound') {
+								player = plus.audio.createPlayer(msgContent);
+								var playState = msgItem.querySelector('.play-state');
+								playState.innerText = '正在播放...';
+								player.play(function() {
+									playState.innerText = '点击播放';
+								}, function(e) {
+									playState.innerText = '点击播放';
+								});
+							}
+						};
+						var imageViewer = new $.ImageViewer('.msg-content-image', {
+							dbl: false
+						});
+						//消息读取方法
+						var bindMsgList = function() {
+							//绑定数据:
+							/*tp.bind({
+								template: 'msg-template',
+								element: 'msg-list',
+								model: record
+							});*/
+							ui.areaMsgList.innerHTML = template('msg-template', {
+								"record": record
+							});
+							var msgItems = ui.areaMsgList.querySelectorAll('.msg-item');
+							[].forEach.call(msgItems, function(item, index) {
+								item.addEventListener('tap', function(event) {
+									msgItemTap(item, event);
+								}, false);
+							});
+							imageViewer.findAllImage();
+							ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
+						};
+						bindMsgList();
+						window.addEventListener('resize', function() {
+							ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
+						}, false);
+						//提交消息的方法
+						var send = function(msg) {
+							record.push(msg);
+							bindMsgList();
+							toRobot(msg.content);
+							//							console.log("发送的消息为：" + msg.content + " 消息类型为：" + msg.type);
+							//							var msgtype = -1; //0,文本消息  1，图片消息 2、语音消息
+							//							var pictures = "";
+							//							if(msg.type == "text") { //文本消息
+							//								msgtype = 0;
+							//							} else if(msg.type == "image") { //图片消息
+							//								msgtype = 1;
+							//								//上传本地文件并获取服务器地址
+							//								updatefile(msg.content, msg.type);
+							//								pictures = msg.content;
+							//							} else if(msg.type == "sound") { //语音消息
+							//								msgtype = 2;
+							//								//上传本地文件并获取服务器地址
+							//								updatefile(msg.content, msg.type);
+							//								pictures = msg.content;
+							//							} else {
+							//								mui.toast("消息类型错误！");
+							//							}
+							console.log("发送的消息为：" + msg.content + " 消息类型为：" + msg.type);
+							var msgtype = -1; //0,文本消息  1，图片消息 2、语音消息
+							var pictures = "";
+							if(msg.type == "text") { //文本消息
+								msgtype = 0;
+							} else if(msg.type == "image") { //图片消息
+								//上传本地文件并获取服务器地址
+								msgtype = 1;
+								uploadadd(msg.content, msgtype);
+								//上传本地文件并获取服务器地址
+								console.log("上传的图片地址：" + adddizhi);
+
+							} else if(msg.type == "sound") { //语音消息
+
+								//上传本地文件并获取服务器地址
+								msgtype = 2;
+								uploadadd(msg.content, msgtype);
+								console.log("上传的文件地址：" + adddizhi);
+							} else {
+								mui.toast("消息类型错误！");
+							}
+							//获取当前时间
+							//GetTime();
+						};
+						//请求智能接口回复
+						var toRobot = function(info) {
+							//						var apiUrl = 'http://www.tuling123.com/openapi/api';
+							//						$.getJSON(apiUrl, {
+							//							"key": 'acfbca724ea1b5db96d2eef88ce677dc',
+							//							"info": info,
+							//							"userid": plus.device.uuid
+							//						}, function(data) {
+							//							//alert(JSON.stringify(data));
+							//							//将返回的信息刷新
+							//							//提交添加一条接受信息的用法
+							//							record.push({
+							//								sender: 'zs',
+							//								type: 'text',
+							//								content: data.text,
+							//								logo: "images/set1.jpg"
+							//							});
+							//							bindMsgList();
+							//						});
+						};
+
+						function msgTextFocus() {
+							ui.boxMsgText.focus();
+							setTimeout(function() {
+								ui.boxMsgText.focus();
+							}, 150);
+						}
+						//解决长按“发送”按钮，导致键盘关闭的问题；
+						ui.footerRight.addEventListener('touchstart', function(event) {
+							if(ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+								msgTextFocus();
+								event.preventDefault();
+							}
+						});
+						//解决长按“发送”按钮，导致键盘关闭的问题；
+						ui.footerRight.addEventListener('touchmove', function(event) {
+							if(ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+								msgTextFocus();
+								event.preventDefault();
+							}
+						});
+						//点击群聊头像跳转事件，传入该查看用户id值
+						var qunUid = "";
+						mui('.msg-itemss').on("tap", ".msg-user-img", function(e) {
+							//用h5系统有的属性例如：alt、src，不能用自定义属性，取出来的值有问题带属性
+							qunUid = this.getAttribute("alt");
+							console.log("群聊用户ID：" + qunUid);
+							mui.openWindow({
+								url: "people_info.html",
+								id: "people_info.html",
+								styles: {
+									//top:"40px",//新页面顶部位置
+								},
+								//打开窗口时传参id值方法
+								extras: {
+									IDinfo: qunUid
+								},
+								show: {
+									autoShow: true,
+									aniShow: "slide-in-right",
+									duration: 100
+								},
+								waiting: {
+									autoShow: true,
+									title: "正在加载中...",
+									options: {
+										//									width: 
+										//									height:
+									}
+								}
+							})
+						})
+						//					ui.footerRight.addEventListener('touchcancel', function(event) {
+						//						if (ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+						//							msgTextFocus();
+						//							event.preventDefault();
+						//						}
+						//					});
+						//					ui.footerRight.addEventListener('touchend', function(event) {
+						//						if (ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+						//							msgTextFocus();
+						//							event.preventDefault();
+						//						}
+						//					});
+						ui.footerRight.addEventListener('release', function(event) {
+							if(ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+								//showKeyboard();
+								ui.boxMsgText.focus();
+								setTimeout(function() {
+									ui.boxMsgText.focus();
+								}, 150);
+								//							event.detail.gesture.preventDefault();
+								send({
+									sender: 'self',
+									type: 'text',
+									content: ui.boxMsgText.value.replace(new RegExp('\n', 'gm'), '<br/>'),
+									logo: headImg,
+									pid: loginID
+								});
+								ui.boxMsgText.value = '';
+								$.trigger(ui.boxMsgText, 'input', null);
+							} else if(ui.btnMsgType.classList.contains('mui-icon-mic')) {
+								ui.btnMsgType.classList.add('mui-icon-compose');
+								ui.btnMsgType.classList.remove('mui-icon-mic');
+								ui.boxMsgText.style.display = 'none';
+								ui.boxMsgSound.style.display = 'block';
+								ui.boxMsgText.blur();
+								document.body.focus();
+							} else if(ui.btnMsgType.classList.contains('mui-icon-compose')) {
+								ui.btnMsgType.classList.add('mui-icon-mic');
+								ui.btnMsgType.classList.remove('mui-icon-compose');
+								ui.boxMsgSound.style.display = 'none';
+								ui.boxMsgText.style.display = 'block';
+								//--
+								//showKeyboard();
+								ui.boxMsgText.focus();
+								setTimeout(function() {
+									ui.boxMsgText.focus();
+								}, 150);
+							}
+						}, false);
+						ui.footerLeft.addEventListener('tap', function(event) {
+							var btnArray = [{
+								title: "拍照"
+							}, {
+								title: "从相册选择"
+							}];
+							plus.nativeUI.actionSheet({
+								title: "选择照片",
+								cancel: "取消",
+								buttons: btnArray
+							}, function(e) {
+								var index = e.index;
+								switch(index) {
+									case 0:
+										break;
+									case 1:
+										var cmr = plus.camera.getCamera();
+										cmr.captureImage(function(path) {
+											send({
+												sender: 'self',
+												type: 'image',
+												content: "file://" + plus.io.convertLocalFileSystemURL(path),
+												logo: headImg,
+												pid: loginID
+											});
+										}, function(err) {});
+										break;
+									case 2:
+										plus.gallery.pick(function(path) {
+											send({
+												sender: 'self',
+												type: 'image',
+												content: path,
+												logo: headImg,
+												pid: loginID
+											});
+										}, function(err) {}, null);
+										break;
+								}
+							});
+						}, false);
+						var setSoundAlertVisable = function(show) {
+							if(show) {
+								ui.boxSoundAlert.style.display = 'block';
+								ui.boxSoundAlert.style.opacity = 1;
+							} else {
+								ui.boxSoundAlert.style.opacity = 0;
+								//fadeOut 完成再真正隐藏
+								setTimeout(function() {
+									ui.boxSoundAlert.style.display = 'none';
+								}, 200);
+							}
+						};
+						var recordCancel = false;
+						var recorder = null;
+						var audio_tips = document.getElementById("audio_tips");
+						var startTimestamp = null;
+						var stopTimestamp = null;
+						var stopTimer = null;
+						ui.boxMsgSound.addEventListener('hold', function(event) {
+							recordCancel = false;
+							if(stopTimer) clearTimeout(stopTimer);
+							audio_tips.innerHTML = "手指上划，取消发送";
+							ui.boxSoundAlert.classList.remove('rprogress-sigh');
+							setSoundAlertVisable(true);
+							recorder = plus.audio.getRecorder();
+							if(recorder == null) {
+								plus.nativeUI.toast("不能获取录音对象");
+								return;
+							}
+							startTimestamp = (new Date()).getTime();
+							recorder.record({
+								filename: "_doc/audio/"
+							}, function(path) {
+								if(recordCancel) return;
+								send({
+									sender: 'self',
+									type: 'sound',
+									content: path,
+									logo: headImg,
+									pid: loginID
+								});
+							}, function(e) {
+								plus.nativeUI.toast("录音时出现异常: " + e.message);
+							});
+						}, false);
+						ui.body.addEventListener('drag', function(event) {
+							//console.log('drag');
+							if(Math.abs(event.detail.deltaY) > 50) {
+								if(!recordCancel) {
+									recordCancel = true;
+									if(!audio_tips.classList.contains("cancel")) {
+										audio_tips.classList.add("cancel");
+									}
+									audio_tips.innerHTML = "松开手指，取消发送";
+								}
+							} else {
+								if(recordCancel) {
+									recordCancel = false;
+									if(audio_tips.classList.contains("cancel")) {
+										audio_tips.classList.remove("cancel");
+									}
+									audio_tips.innerHTML = "手指上划，取消发送";
+								}
+							}
+						}, false);
+						ui.boxMsgSound.addEventListener('release', function(event) {
+							//console.log('release');
+							if(audio_tips.classList.contains("cancel")) {
+								audio_tips.classList.remove("cancel");
+								audio_tips.innerHTML = "手指上划，取消发送";
+							}
+							//
+							stopTimestamp = (new Date()).getTime();
+							if(stopTimestamp - startTimestamp < MIN_SOUND_TIME) {
+								audio_tips.innerHTML = "录音时间太短";
+								ui.boxSoundAlert.classList.add('rprogress-sigh');
+								recordCancel = true;
+								stopTimer = setTimeout(function() {
+									setSoundAlertVisable(false);
+								}, 800);
+							} else {
+								setSoundAlertVisable(false);
+							}
+							recorder.stop();
+						}, false);
+						ui.boxMsgSound.addEventListener("touchstart", function(e) {
+							//console.log("start....");
+							e.preventDefault();
+						});
+						ui.boxMsgText.addEventListener('input', function(event) {
+							ui.btnMsgType.classList[ui.boxMsgText.value == '' ? 'remove' : 'add']('mui-icon-paperplane');
+							ui.btnMsgType.setAttribute("for", ui.boxMsgText.value == '' ? '' : 'msg-text');
+							ui.h.innerText = ui.boxMsgText.value.replace(new RegExp('\n', 'gm'), '\n-') || '-';
+							ui.footer.style.height = (ui.h.offsetHeight + footerPadding) + 'px';
+							ui.content.style.paddingBottom = ui.footer.style.height;
+						});
+						var focus = false;
+						ui.boxMsgText.addEventListener('tap', function(event) {
+							ui.boxMsgText.focus();
+							setTimeout(function() {
+								ui.boxMsgText.focus();
+							}, 0);
+							focus = true;
+							setTimeout(function() {
+								focus = false;
+							}, 1000);
+							event.detail.gesture.preventDefault();
+						}, false);
+						//点击消息列表，关闭键盘
+						ui.areaMsgList.addEventListener('click', function(event) {
+							if(!focus) {
+								ui.boxMsgText.blur();
+							}
+						})
+					});
+				}(mui, document));
+
+			//获取当前时间提交格式
+			function GetTime() {
+				var date = new Date();
+				//JSON格式时间：2018-03-29T09:50:38.017Z
+				var newtimes = date.toJSON();
+				console.log('当前时间:' + newtimes);
+			}
+			//提交手机群聊列表文件到服务器并获取服务器存储地址
+			//提交上传的方法
+			//服务端接口路径
+			var server = ServerURL + "/upload";
+			//获取本地文件地址
+			//var files = document.getElementById('head-img1');
+			// 上传文件
+			function uploadadd(files, types) {
+				console.log(files);
+				var wt = plus.nativeUI.showWaiting();
+				var task = plus.uploader.createUpload(server, {
+						method: "POST"
+					},
+					function(t, status) { //上传完成
+						if(status == 200) {
+							var responseText = t.responseText;
+							console.log(t.responseText);
+							if(responseText.indexOf("code") != -1) {
+								mui.toast("发送文件失败：" + status);
+							} else {
+								//mui.toast("上传成功!");
+								console.log("群聊消息文件上传返回值:" + t.responseText);
+								//
+								tijiaoxiaoxi(t.responseText, types);
+							}
+							wt.close(); //关闭等待提示按钮
+						} else {
+							alert("上传失败：" + status);
+							wt.close(); //关闭等待提示按钮
+						}
+					}
+				);
+				//添加其他参数
+				task.addData("name", "imadd");
+				task.addFile(files, {
+					key: "file"
+				});
+				task.start();
+
+			}
+			//提交一条消息
+			function tijiaoxiaoxi(pictures, msgtype) {
+				//获取当前时间
+				//GetTime();
+				var date1 = new Date();
+				//JSON格式时间：2018-03-29T09:50:38.017Z
+				var newtimes1 = date1.toJSON();
+				//plus.nativeUI.closeWaiting();
+				if(msgtype > -1) {
+					// 提交群聊记录
+					mui.ajax({
+						type: "post",
+						url: ServerURL + '/insertGroupChatLog',
+						async: false,
+						data: {
+							"content": pictures, //内容
+							"creatTime": newtimes1, //时间
+							"picture": pictures, //照片
+							"roomId": roomid, //房间id
+							"userId": loginID,
+							"type": msgtype
+						},
+						dataType: "jsonp",
+						jsonp: "jsoncallback",
+						timeout: 500, //超时时间设置为1秒；
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						success: function(data, status, xhr) {
+							var successString = JSON.parse(data);
+							console.log("群聊对话数据内容为 : " + data);
+							var codelog = successString.code;
+							if(codelog == "0") {
+
+								mui.toast('发送消息成功！');
+							} else {
+								mui.toast('发送消息出错！');
+							}
+							return data;
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log("error: " + type);
+							return "发送群聊数据失败：服务器错误！";
+						}
+					});
+				}
+			}
+			//退出
+			function exitxx() {
+				//请求数据
+				var loginID = localStorage.getItem("loginID");
+				var btnArray = ['否', '是'];
+				mui.confirm('确认该群聊么？', '群聊组：' + titleName, btnArray, function(e) {
+					if(e.index == 1) {
+						mui.ajax({
+							type: "post",
+							url: ServerURL + '/exitRoom',
+							async: true,
+							data: {
+								"id": roomid,
+								"userId": loginID
+							},
+							dataType: "jsonp",
+							jsonp: "jsoncallback",
+							timeout: 1000, //超时时间设置为1秒；
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							success: function(data, status, xhr) {
+								var successString = JSON.parse(data);
+								console.log("返回的退出群聊数据内容为 : " + data);
+								var codelog = successString.code;
+								//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+								//获取题干模板 
+								if(codelog != "-1") {
+									mui.toast('您已成功退出群聊:' + titleName + '！');
+									mui.back();
+									plus.webview.getWebviewById('main').reload();
+								} else if(codelog == "-1") {
+									mui.toast('网络连接错误！');
+								} else {
+									mui.toast('退出失败！');
+								}
+								return data;
+							},
+							error: function(xhr, type, errorThrown) {
+								console.log("error: " + type);
+								mui.toast('删除超时！');
+								return "退出失败：请求服务器错误！";
+							}
+						});
+
+					} else {}
+				})
+			}
+			//
+			function selectinfo() {
+				mui.openWindow({
+					id: 'PInfoList.html',
+					url: 'PInfoList.html',
+					extras: {
+						roomids: roomid
+					}
+				})
+			}
+			//聊天记录缓存方法
+			function readingcache() {
+				//请求数据
+				//var loginID = localStorage.getItem("loginID");
+				var listdatas = localStorage.getItem(roomid);
+				var str1 = JSON.parse(listdatas);
+				var listdata = str1.data.list;
+				console.log("读取群聊缓存数据：" + listdata);
+				//开始加入缓存(依据房间id)
+				var sizedaxiao = str1.size;
+				//console.log("返回的数据list内容长度为 : " + successString.data.list.length);
+				//获取题干模板 
+				for(var i = listdata.length-1; i >=0 ; i--) {
+					//默认他人的消息
+					var senders = "";
+					if(listdata[i].userId == loginID) {
+						senders = "self";
+					} else {
+						senders = "zs";
+					}
+					var types = "text";
+					var contents = "";
+					if(listdata[i].type == 0) {
+						types = "text";
+						contents = listdata[i].content;
+					} else if(listdata[i].type == 1) {
+						types = "image";
+						contents = listdata[i].picture;
+					} else if(listdata[i].type == 2) {
+						types = "sound";
+						contents = listdata[i].picture;
+					}
+
+					record.push({
+						sender: senders,
+						type: types,
+						content: contents,
+						logo: listdata[i].headImg,
+						pid: listdata[i].userId
+					});
+				}
+			}
+		</script>
+	</body>
+
+</html>
