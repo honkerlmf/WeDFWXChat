@@ -10,6 +10,7 @@
 <br/>6、朋友圈个人中心动态及好友动态
 <br/>7、仿微信聊天主体界面（文字、语音对话、消息记录等）
 <br/>8、平台金币模块
+<br/>支持：ios、android
 <br/>示例：（未连接服务器效果）
 <br/>EN:
 <br/>Group chat - imitation WeChat basic function cross-platform APP (technology stack: H5plus cross-platform framework MUI development)
