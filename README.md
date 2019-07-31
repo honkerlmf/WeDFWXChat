@@ -9,7 +9,7 @@
 <br/>6、朋友圈个人中心动态及好友动态
 <br/>7、仿微信聊天主体界面（文字、语音对话、消息记录等）
 <br/>8、平台金币模块
-示例：（未连接服务器效果）
+<br/>示例：（未连接服务器效果）
 <br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d1.png?raw=true)
 <br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d2.png?raw=true)
 <br/> ![Image text](https://github.com/honkerlmf/WeDFWXChat/blob/master/demo-image/d3.png?raw=true)
